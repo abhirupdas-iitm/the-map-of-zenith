@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  background: #0f172a;
+  color: #e5e7eb;
+  font-family: system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 3rem 1.5rem;
+}
+
+h1 {
+  font-size: 2.3rem;
+}
+
+.meta {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.intro {
+  margin: 1.5rem 0;
+  font-size: 1.1rem;
+}
+
+pre {
+  background: #020617;
+  padding: 1.5rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.95rem;
+}
+
+footer {
+  margin-top: 3rem;
+  color: #64748b;
+}
+.progress-btn {
+  margin: 2rem 0;
+  padding: 0.7rem 1.2rem;
+  background: #1e293b;
+  color: #e5e7eb;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.progress-btn:hover {
+  background: #334155;
+}
+
+.progress {
+  margin-top: 2rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.weeks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.week {
+  width: 60px;
+  height: 60px;
+  background: #020617;
+  border: 2px solid #334155;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+.countdown {
+  margin: 2rem 0;
+  padding: 1rem;
+  background: #020617;
+  border-radius: 8px;
+}
+
+#timer {
+  font-size: 1.2rem;
+  color: #38bdf8;
+}
+.week.locked {
+  background: #020617;
+  border: 2px solid #334155;
+  color: #64748b;
+  cursor: not-allowed;
+}
+
+.week.completed {
+  background: #16a34a;
+  border: 2px solid #22c55e;
+  color: #022c22;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.week.completed:hover {
+  transform: scale(1.05);
+}
+
+.week-details {
+  margin-top: 2rem;
+  background: #020617;
+  padding: 1.5rem;
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
