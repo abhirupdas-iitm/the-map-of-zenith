@@ -123,6 +123,6 @@ footer {
 }
 
 .week-list li {
-  margin-bottom: 6px;   /* controls vertical gap */
+  margin-bottom: 1px;   /* controls vertical gap */
   line-height: 1.35;
 }
