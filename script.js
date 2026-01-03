@@ -17,15 +17,17 @@ const TOTAL_WEEKS = 52;
 // ================== COMPLETED WEEKS (EDIT THIS ONLY) ==================
 const completedWeeks = {
   1: `
-    <strong>Week 1 (Dec 27 – Jan 2)</strong><br><br>
-    • Maths: Discrete Math (Sets, Logic, Relations)<br>
-    • DSA: Arrays, Stacks, Queues<br>
-    • DBMS: ER Model, Relational Model<br>
-    • PYQs: Discrete + Arrays<br>
-    • Admin: IITM term orientation
+    <strong>Week 1 (Dec 27 – Jan 2)</strong>
+    <ul class="week-list">
+      <li>Maths: Discrete Math (Sets, Logic, Relations)</li>
+      <li>DSA: Arrays, Stacks, Queues</li>
+      <li>DBMS: ER Model, Relational Model</li>
+      <li>PYQs: Discrete + Arrays</li>
+      <li>Admin: IITM term orientation</li>
+    </ul>
   `
-  // add more weeks here as you complete them
 };
+
 
 // ================== HELPERS ==================
 function weekEndDate(week) {

@@ -117,3 +117,12 @@ footer {
   color: #e5e7eb;
   font-size: 0.95rem;
 }
+.week-list {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.week-list li {
+  margin-bottom: 6px;   /* controls vertical gap */
+  line-height: 1.35;
+}
