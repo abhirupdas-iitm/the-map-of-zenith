@@ -108,21 +108,20 @@ footer {
 .week.completed:hover {
   transform: scale(1.05);
 }
-
 .week-details {
-  margin-top: 2rem;
+  margin-top: 0.5rem;
   background: #020617;
   padding: 1.5rem;
   border-radius: 8px;
   color: #e5e7eb;
   font-size: 0.95rem;
 }
+
 .week-list {
-  margin-top: 10px;
   padding-left: 18px;
 }
 
 .week-list li {
-  margin-bottom: 1px;   /* controls vertical gap */
+  margin-bottom: 1px;
   line-height: 1.35;
 }
