@@ -125,3 +125,31 @@ footer {
   margin-bottom: 1px;
   line-height: 1.35;
 }
+/* Dark fading background */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 5;
+}
+
+.backdrop.active {
+  opacity: 1;
+}
+
+/* Pop-out animation for details */
+.week-details {
+  position: relative;
+  z-index: 10;
+  transform: scale(0.96);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.week-details.active {
+  transform: scale(1);
+  opacity: 1;
+}

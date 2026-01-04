@@ -50,16 +50,25 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
     // COMPLETED
     week.classList.add("completed");
 
-    week.addEventListener("click", () => {
+  week.addEventListener("click", () => {
     if (activeWeek === i) {
-      // same week clicked again → collapse
-      detailsBox.classList.add("hidden");
-      detailsBox.innerHTML = "";
+      // HIDE
+      detailsBox.classList.remove("active");
+      document.getElementById("backdrop").classList.remove("active");
+  
+      setTimeout(() => {
+        detailsBox.classList.add("hidden");
+        detailsBox.innerHTML = "";
+      }, 200);
+  
       activeWeek = null;
     } else {
-      // new week clicked → show / switch
+      // SHOW
       detailsBox.innerHTML = completedWeeks[i];
       detailsBox.classList.remove("hidden");
+      detailsBox.classList.add("active");
+      document.getElementById("backdrop").classList.add("active");
+  
       activeWeek = i;
     }
   });
