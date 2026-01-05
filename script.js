@@ -5,6 +5,24 @@ const weeksGrid = document.querySelector(".weeks-grid");
 const detailsBox = document.getElementById("weekDetails");
 let activeWeek = null;
 
+// ===== MODAL ELEMENTS (ADD THESE RIGHT HERE) =====
+const backdrop = document.getElementById("backdrop");
+const modal = document.getElementById("modal");
+const modalContent = document.getElementById("modalContent");
+backdrop.addEventListener("click", closeModal);
+
+function closeModal() {
+  backdrop.classList.remove("active");
+  modal.classList.remove("active");
+
+  setTimeout(() => {
+    backdrop.classList.add("hidden");
+    modal.classList.add("hidden");
+    modalContent.innerHTML = "";
+    activeWeek = null;
+  }, 200);
+}
+
 // ================== TOGGLE ==================
 toggleBtn.addEventListener("click", () => {
   progressSection.classList.toggle("hidden");
@@ -51,27 +69,20 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
     week.classList.add("completed");
 
   week.addEventListener("click", () => {
-    if (activeWeek === i) {
-      // HIDE
-      detailsBox.classList.remove("active");
-      document.getElementById("backdrop").classList.remove("active");
-  
-      setTimeout(() => {
-        detailsBox.classList.add("hidden");
-        detailsBox.innerHTML = "";
-      }, 200);
-  
-      activeWeek = null;
-    } else {
-      // SHOW
-      detailsBox.innerHTML = completedWeeks[i];
-      detailsBox.classList.remove("hidden");
-      detailsBox.classList.add("active");
-      document.getElementById("backdrop").classList.add("active");
-  
-      activeWeek = i;
-    }
+    modalContent.innerHTML = completedWeeks[i];
+
+    backdrop.classList.remove("hidden");
+      modal.classList.remove("hidden");
+
+    // allow animation frame so CSS transition works
+    requestAnimationFrame(() => {
+      backdrop.classList.add("active");
+      modal.classList.add("active");
+    });
+
+    activeWeek = i;
   });
+
 
   } else {
     // FUTURE / LOCKED
@@ -80,6 +91,7 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
 
   weeksGrid.appendChild(week);
 }
+
 
 // ================== COUNTDOWN ==================
 const targetDate = new Date("2027-02-06T00:00:00").getTime();
