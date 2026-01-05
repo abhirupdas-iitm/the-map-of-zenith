@@ -3,7 +3,7 @@ body {
   background: #0f172a;
   color: #e5e7eb;
   font-family: system-ui, sans-serif;
-  line-height: 1.6;
+  line-height: normal;
 }
 
 .container {
@@ -153,20 +153,6 @@ footer {
   transform: scale(1);
   opacity: 1;
 }
-/* Backdrop */
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  z-index: 50;
-}
-
-.backdrop.active {
-  opacity: 1;
-}
 
 /* Modal box */
 .modal {
@@ -189,4 +175,56 @@ footer {
 .modal.active {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
+}
+/* Week heading */
+h3 {
+  margin-bottom: 0.3rem;   /* reduce gap below heading */
+}
+
+/* Week subtitle */
+.week-subtitle {
+  margin-top: 0;           /* remove top gap */
+  margin-bottom: 0.6rem;   /* keep a little breathing room before hr */
+}
+.phase-title {
+  margin-top: 2rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+}
+
+.week-details h3 {
+  margin-bottom: 0.2rem;
+}
+
+.week-subtitle {
+  margin: 0 0 0.6rem 0;
+  opacity: 0.85;
+}
+
+.week-details hr {
+  margin: 0.6rem 0 1.2rem 0;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.3);
+}
+/* ===== FINAL SPACING FIX ===== */
+
+/* Reset heading margins completely */
+.week-details h3 {
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* Subtitle right under heading */
+.week-subtitle {
+  margin: 0.15rem 0 0.5rem 0;
+  line-height: 1.35;
+  opacity: 0.85;
+}
+
+/* Divider spacing */
+.week-details hr {
+  margin: 0.6rem 0 1rem 0;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.3);
 }
