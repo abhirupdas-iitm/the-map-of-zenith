@@ -31,6 +31,19 @@ toggleBtn.addEventListener("click", () => {
 // ================== CONFIG ==================
 const PLAN_START = new Date("2025-12-27T00:00:00");
 const TOTAL_WEEKS = 52;
+// ================== YEAR PROGRESS (365 DAYS) ==================
+const START_DATE = new Date("2025-12-27T00:00:00");
+const TOTAL_DAYS = 365;
+
+const today = new Date();
+const daysPassed = Math.floor(
+  (today - START_DATE) / (1000 * 60 * 60 * 24)
+);
+
+const progress = Math.min(daysPassed / TOTAL_DAYS, 1);
+
+document.querySelector(".progress-fill").style.width =
+  `${progress * 100}%`;
 
 // ================== LOCAL STORAGE HELPERS ==================
 function loadCompletedWeeks() {
