@@ -26,3 +26,7 @@ so progress is preserved across page refreshes.
 - Persist daily logs
 - Improve accessibility and mobile UX
 - Add visual indicators for upcoming unlocks
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8312f96 (docs: add project overview and persistence notes)
