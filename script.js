@@ -112,6 +112,10 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
       backdrop.classList.add("active");
       modal.classList.add("active");
     });
+    if (!storedCompletedWeeks.includes(i)) {
+      storedCompletedWeeks.push(i);
+      saveCompletedWeeks(storedCompletedWeeks);
+    }
 
     activeWeek = i;
   });
