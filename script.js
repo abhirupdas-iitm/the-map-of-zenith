@@ -81,6 +81,7 @@ function weekEndDate(week) {
 }
 
 // ================== GENERATE WEEKS ==================
+let storedCompletedWeeks = loadCompletedWeeks();
 const now = new Date();
 
 for (let i = 1; i <= TOTAL_WEEKS; i++) {
