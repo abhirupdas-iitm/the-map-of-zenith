@@ -32,6 +32,34 @@ toggleBtn.addEventListener("click", () => {
 const PLAN_START = new Date("2025-12-27T00:00:00");
 const TOTAL_WEEKS = 52;
 
+// ================== LOCAL STORAGE HELPERS ==================
+function loadCompletedWeeks() {
+  const stored = localStorage.getItem("completedWeeks");
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveCompletedWeeks(weeksArray) {
+  localStorage.setItem(
+    "completedWeeks",
+    JSON.stringify(weeksArray)
+  );
+}
+
+
+// ================== YEAR PROGRESS (365 DAYS) ==================
+const START_DATE = new Date("2025-12-27T00:00:00");
+const TOTAL_DAYS = 365;
+
+const today = new Date();
+const daysPassed = Math.floor(
+  (today - START_DATE) / (1000 * 60 * 60 * 24)
+);
+
+const progress = Math.min(daysPassed / TOTAL_DAYS, 1);
+
+document.querySelector(".progress-fill").style.width =
+  `${progress * 100}%`;
+
 // ================== COMPLETED WEEKS (EDIT THIS ONLY) ==================
 const completedWeeks = {
   1: `
@@ -70,7 +98,11 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
 
   week.addEventListener("click", () => {
     modalContent.innerHTML = completedWeeks[i];
-
+      // ENFORCEMENT OF STEP  (THIS IS THE LINE YOU ASKED ABOUT)
+    if (now > end && !storedCompletedWeeks.includes(i)) {
+      storedCompletedWeeks.push(i);
+      saveCompletedWeeks(storedCompletedWeeks);
+    }
     backdrop.classList.remove("hidden");
       modal.classList.remove("hidden");
 
