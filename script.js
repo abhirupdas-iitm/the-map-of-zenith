@@ -93,7 +93,7 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
 
   const end = weekEndDate(i);
 
-  if (now > end && completedWeeks[i]) {
+  if (now > end && storedCompletedWeeks.includes(i)) {
     // COMPLETED
     week.classList.add("completed");
 
