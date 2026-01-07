@@ -31,6 +31,21 @@ toggleBtn.addEventListener("click", () => {
 // ================== CONFIG ==================
 const PLAN_START = new Date("2025-12-27T00:00:00");
 const TOTAL_WEEKS = 52;
+
+// ================== LOCAL STORAGE HELPERS ==================
+function loadCompletedWeeks() {
+  const stored = localStorage.getItem("completedWeeks");
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveCompletedWeeks(weeksArray) {
+  localStorage.setItem(
+    "completedWeeks",
+    JSON.stringify(weeksArray)
+  );
+}
+
+
 // ================== YEAR PROGRESS (365 DAYS) ==================
 const START_DATE = new Date("2025-12-27T00:00:00");
 const TOTAL_DAYS = 365;
