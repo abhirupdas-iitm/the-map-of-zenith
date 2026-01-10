@@ -67,6 +67,18 @@ const completedWeeks = {
       <li>PYQs: Discrete + Arrays</li>
       <li>Admin: IITM term orientation</li>
     </ul>
+
+  `,
+
+  2: `
+    <strong>Week 2 (Jan 3 – Jan 9)</strong>
+    <ul class="week-list">
+      <li>Maths: Functions, Graph basics</li>
+      <li>DSA: Linked Lists</li>
+      <li>DBMS: Relational Algebra</li>
+      <li>PYQs: Discrete full + LL</li>
+      <li>IITM: Lectures + Assignment batch</li>
+    </ul>
   `
 };
 
