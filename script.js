@@ -11,8 +11,35 @@ const weeksGrid = document.querySelector(".weeks-grid");
 const backdrop = document.getElementById("backdrop");
 const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modalContent");
+const openLogsBtn = document.getElementById("openLogs");
 
 let activeWeek = null;
+
+// ================== DAILY LOGS ==================
+function loadLogs() {
+  const logs = localStorage.getItem("dailyLogs");
+  return logs ? JSON.parse(logs) : {};
+}
+
+function saveLogs(logs) {
+  localStorage.setItem("dailyLogs", JSON.stringify(logs));
+}
+
+function todayKey() {
+  return new Date().toISOString().split("T")[0];
+}
+
+const dailyLogs = loadLogs();
+
+// Allow log entry ONLY for today
+if (!dailyLogs[todayKey()]) {
+  const entry = prompt("Write today's log (cannot be changed later):");
+
+  if (entry && entry.trim()) {
+    dailyLogs[todayKey()] = entry.trim();
+    saveLogs(dailyLogs);
+  }
+}
 
 // ================== MODAL ==================
 function closeModal() {
@@ -29,12 +56,55 @@ function closeModal() {
 
 backdrop.addEventListener("click", closeModal);
 
+// ================== LOGS MODAL ==================
+if (openLogsBtn) {
+  openLogsBtn.addEventListener("click", () => {
+    modalContent.innerHTML = "<h3>Daily Logs</h3>";
+
+    const ul = document.createElement("ul");
+    ul.className = "logs-list";
+
+    const keys = Object.keys(dailyLogs).sort().reverse();
+
+    if (keys.length === 0) {
+      ul.innerHTML = "<li>No logs yet.</li>";
+    }
+
+    keys.forEach(date => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span class="log-date">${date}</span>
+        <span class="log-preview">${dailyLogs[date].slice(0, 60)}...</span>
+      `;
+
+      li.addEventListener("click", () => {
+        modalContent.innerHTML = `
+          <h3>${date}</h3>
+          <pre>${dailyLogs[date]}</pre>
+        `;
+      });
+
+      ul.appendChild(li);
+    });
+
+    modalContent.appendChild(ul);
+
+    backdrop.classList.remove("hidden");
+    modal.classList.remove("hidden");
+
+    requestAnimationFrame(() => {
+      backdrop.classList.add("active");
+      modal.classList.add("active");
+    });
+  });
+}
+
 // ================== TOGGLE ==================
 toggleBtn.addEventListener("click", () => {
   progressSection.classList.toggle("hidden");
 });
 
-// ================== LOCAL STORAGE ==================
+// ================== LOCAL STORAGE (WEEKS) ==================
 function loadCompletedWeeks() {
   const stored = localStorage.getItem("completedWeeks");
   return stored ? JSON.parse(stored) : [];
@@ -67,9 +137,7 @@ const completedWeeks = {
       <li>PYQs: Discrete + Arrays</li>
       <li>Admin: IITM term orientation</li>
     </ul>
-
   `,
-
   2: `
     <strong>Week 2 (Jan 3 – Jan 9)</strong>
     <ul class="week-list">
@@ -125,7 +193,6 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
 
       activeWeek = i;
     });
-
   } else {
     week.classList.add("locked");
   }
