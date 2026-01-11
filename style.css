@@ -249,3 +249,29 @@ h3 {
   );
   transition: width 0.6s ease;
 }
+/* ===== DAILY LOGS ===== */
+
+.logs-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.logs-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+}
+
+.logs-list li:hover {
+  opacity: 0.85;
+}
+
+.log-date {
+  font-weight: 600;
+  display: block;
+}
+
+.log-preview {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
