@@ -29,6 +29,13 @@ function todayKey() {
   return new Date().toISOString().split("T")[0];
 }
 
+function previousDay(dateStr) {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() - 1);
+  return d.toISOString().split("T")[0];
+}
+
+
 const dailyLogs = loadLogs();
 
 // Allow log entry ONLY for today
