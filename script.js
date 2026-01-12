@@ -60,6 +60,29 @@ function calculateCurrentStreak(logs) {
   return streak;
 }
 
+function calculateLongestStreak(logs) {
+  const dates = Object.keys(logs).sort(); // oldest → newest
+  let longest = 0;
+  let current = 0;
+
+  for (let i = 0; i < dates.length; i++) {
+    if (i === 0) {
+      current = 1;
+    } else {
+      const expected = previousDay(dates[i]);
+      if (dates[i - 1] === expected) {
+        current++;
+      } else {
+        current = 1;
+      }
+    }
+    longest = Math.max(longest, current);
+  }
+
+  return longest;
+}
+
+
 
 // ================== MODAL ==================
 function closeModal() {
