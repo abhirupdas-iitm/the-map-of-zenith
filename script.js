@@ -48,6 +48,19 @@ if (!dailyLogs[todayKey()]) {
   }
 }
 
+function calculateCurrentStreak(logs) {
+  let streak = 0;
+  let day = todayKey();
+
+  while (logs[day]) {
+    streak++;
+    day = previousDay(day);
+  }
+
+  return streak;
+}
+
+
 // ================== MODAL ==================
 function closeModal() {
   backdrop.classList.remove("active");
