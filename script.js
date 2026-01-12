@@ -268,3 +268,42 @@ const longestStreak = calculateLongestStreak(dailyLogs);
 
 console.log("Current streak:", currentStreak);
 console.log("Longest streak:", longestStreak);
+
+// ================== STREAK UI BINDING ==================
+const streakEl = document.getElementById("currentStreak");
+const bestEl = document.getElementById("bestStreak");
+const streakFill = document.getElementById("streakFill");
+
+// Compute streaks
+function computeStreaks(logs) {
+  const dates = Object.keys(logs).sort();
+  let current = 0;
+  let best = 0;
+
+  for (let i = 0; i < dates.length; i++) {
+    if (i === 0) {
+      current = 1;
+    } else {
+      const prev = new Date(dates[i - 1]);
+      const curr = new Date(dates[i]);
+      const diff =
+        (curr - prev) / (1000 * 60 * 60 * 24);
+
+      if (diff === 1) current++;
+      else current = 1;
+    }
+    best = Math.max(best, current);
+  }
+
+  return { current, best };
+}
+
+// Render streak
+const { current, best } = computeStreaks(dailyLogs);
+
+streakEl.textContent = current;
+bestEl.textContent = best;
+
+// Cap visual bar at 30 days for aesthetics
+const capped = Math.min(current, 30);
+streakFill.style.width = `${(capped / 30) * 100}%`;

@@ -275,3 +275,46 @@ h3 {
   font-size: 0.85rem;
   opacity: 0.75;
 }
+/* 🔵 Energon Streak HUD */
+.streak-panel {
+  margin: 1.5rem 0 2rem 0;
+}
+
+.streak-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+  color: #c7d2fe;
+}
+
+.streak-title {
+  opacity: 0.85;
+}
+
+.streak-bar {
+  height: 12px;
+  width: 100%;
+  background: #020617;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.streak-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(
+    90deg,
+    #38bdf8,
+    #0ea5e9,
+    #2563eb
+  );
+  transition: width 0.4s ease;
+}
+
+.streak-meta {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
