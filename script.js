@@ -262,3 +262,9 @@ setInterval(() => {
 
   timer.textContent = `${days} days • ${hours} hours • ${minutes} minutes`;
 }, 1000);
+
+const currentStreak = calculateCurrentStreak(dailyLogs);
+const longestStreak = calculateLongestStreak(dailyLogs);
+
+console.log("Current streak:", currentStreak);
+console.log("Longest streak:", longestStreak);
