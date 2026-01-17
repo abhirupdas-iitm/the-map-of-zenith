@@ -190,6 +190,15 @@ const completedWeeks = {
       <li>PYQs: Discrete full + LL</li>
       <li>IITM: Lectures + Assignment batch</li>
     </ul>
+  `,
+  3: `
+    <strong>Week 3 (Jan 10 – Jan 16)</strong>
+    <ul class="week-list">
+      <li>Maths: Linear Algebra (Vector spaces, Rank)</li>
+      <li>DSA: Trees (BST, Traversal)</li>
+      <li>DBMS: SQL Basics</li>
+      <li>PYQs: LA + Trees</li>
+    </ul>
   `
 };
 
