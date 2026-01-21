@@ -164,8 +164,13 @@ footer {
   color: #e5e7eb;
   padding: 1.5rem;
   border-radius: 14px;
-  max-width: 420px;
-  width: 90%;
+
+  max-width: 480px;
+  width: 92%;
+
+  max-height: 80vh;              /* ✅ LIMIT HEIGHT */
+  overflow-y: auto;              /* ✅ ENABLE SCROLL */
+
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: transform 0.25s ease, opacity 0.25s ease;
@@ -254,6 +259,7 @@ h3 {
 .logs-list {
   list-style: none;
   padding-left: 0;
+  margin-top: 0.8rem;
 }
 
 .logs-list li {
