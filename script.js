@@ -199,6 +199,14 @@ const completedWeeks = {
       <li>DBMS: SQL Basics</li>
       <li>PYQs: LA + Trees</li>
     </ul>
+  `,
+  4: `
+    <strong>Week 4 (Jan 17 - Jan 23)</strong>
+    <ul class="week-list">
+      <li>Maths: Eigenvalues, SVD (Singular Value Decomposition)</li>
+      <li>DSA: Hashing</li>
+      <li>DBMS: SQL joins, subqueries</li>
+      <li>PYQs: LA (Linear Algebra) + Hashing
   `
 };
 
