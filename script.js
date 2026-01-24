@@ -3,6 +3,9 @@ const START_DATE = new Date("2025-12-27T00:00:00");
 const TOTAL_WEEKS = 52;
 const TOTAL_DAYS = 365;
 
+// ✅ SINGLE authoritative target date (FIX)
+const targetDate = new Date("2027-02-06T00:00:00").getTime();
+
 // ================== ELEMENTS ==================
 const toggleBtn = document.getElementById("toggleProgress");
 const progressSection = document.getElementById("progressSection");
@@ -35,7 +38,6 @@ function previousDay(dateStr) {
   return d.toISOString().split("T")[0];
 }
 
-
 const dailyLogs = loadLogs();
 
 // Allow log entry ONLY for today
@@ -61,7 +63,7 @@ function calculateCurrentStreak(logs) {
 }
 
 function calculateLongestStreak(logs) {
-  const dates = Object.keys(logs).sort(); // oldest → newest
+  const dates = Object.keys(logs).sort();
   let longest = 0;
   let current = 0;
 
@@ -81,8 +83,6 @@ function calculateLongestStreak(logs) {
 
   return longest;
 }
-
-
 
 // ================== MODAL ==================
 function closeModal() {
@@ -119,7 +119,6 @@ if (openGateTimerBtn) {
       modal.classList.add("active");
     });
 
-    // Sync timer display
     const box = document.getElementById("gateTimerBox");
     if (box) box.textContent = latestTimeString;
   });
@@ -229,10 +228,11 @@ const completedWeeks = {
   4: `
     <strong>Week 4 (Jan 17 - Jan 23)</strong>
     <ul class="week-list">
-      <li>Maths: Eigenvalues, SVD (Singular Value Decomposition)</li>
+      <li>Maths: Eigenvalues, SVD</li>
       <li>DSA: Hashing</li>
       <li>DBMS: SQL joins, subqueries</li>
-      <li>PYQs: LA (Linear Algebra) + Hashing
+      <li>PYQs: LA + Hashing</li>
+    </ul>
   `
 };
 
@@ -286,57 +286,37 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
   weeksGrid.appendChild(week);
 }
 
-// ================== COUNTDOWN ==================
-const targetDate = new Date("2027-02-06T00:00:00").getTime();
-
-
-const currentStreak = calculateCurrentStreak(dailyLogs);
-const longestStreak = calculateLongestStreak(dailyLogs);
-
-console.log("Current streak:", currentStreak);
-console.log("Longest streak:", longestStreak);
-
 // ================== STREAK UI BINDING ==================
 const streakEl = document.getElementById("currentStreak");
 const bestEl = document.getElementById("bestStreak");
 const streakFill = document.getElementById("streakFill");
 
-// Compute streaks
-function computeStreaks(logs) {
+const { current, best } = (function computeStreaks(logs) {
   const dates = Object.keys(logs).sort();
   let current = 0;
   let best = 0;
 
   for (let i = 0; i < dates.length; i++) {
-    if (i === 0) {
-      current = 1;
-    } else {
+    if (i === 0) current = 1;
+    else {
       const prev = new Date(dates[i - 1]);
       const curr = new Date(dates[i]);
-      const diff =
-        (curr - prev) / (1000 * 60 * 60 * 24);
-
-      if (diff === 1) current++;
-      else current = 1;
+      const diff = (curr - prev) / (1000 * 60 * 60 * 24);
+      current = diff === 1 ? current + 1 : 1;
     }
     best = Math.max(best, current);
   }
 
   return { current, best };
-}
-
-// Render streak
-const { current, best } = computeStreaks(dailyLogs);
+})(dailyLogs);
 
 streakEl.textContent = current;
 bestEl.textContent = best;
 
-// Cap visual bar at 30 days for aesthetics
 const capped = Math.min(current, 30);
 streakFill.style.width = `${(capped / 30) * 100}%`;
 
 // ================== SINGLE GLOBAL TIMER ==================
-const targetDate = new Date("2027-02-06T00:00:00").getTime();
 let latestTimeString = "";
 
 setInterval(() => {
