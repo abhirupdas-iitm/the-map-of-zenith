@@ -99,6 +99,32 @@ function closeModal() {
 
 backdrop.addEventListener("click", closeModal);
 
+// ================== GATE TIMER MODAL ==================
+const openGateTimerBtn = document.getElementById("openGateTimer");
+
+if (openGateTimerBtn) {
+  openGateTimerBtn.addEventListener("click", () => {
+    modalContent.innerHTML = `
+      <div class="gate-timer">
+        <img src="rabbit-clock.png" alt="Time waits">
+        <div class="timer-box" id="gateTimerBox">--:--:--</div>
+      </div>
+    `;
+
+    backdrop.classList.remove("hidden");
+    modal.classList.remove("hidden");
+
+    requestAnimationFrame(() => {
+      backdrop.classList.add("active");
+      modal.classList.add("active");
+    });
+
+    // Sync timer display
+    const box = document.getElementById("gateTimerBox");
+    if (box) box.textContent = latestTimeString;
+  });
+}
+
 // ================== LOGS MODAL ==================
 if (openLogsBtn) {
   openLogsBtn.addEventListener("click", () => {
@@ -262,23 +288,7 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
 
 // ================== COUNTDOWN ==================
 const targetDate = new Date("2027-02-06T00:00:00").getTime();
-const timer = document.getElementById("timer");
 
-setInterval(() => {
-  const now = Date.now();
-  const diff = targetDate - now;
-
-  if (diff <= 0) {
-    timer.textContent = "It begins.";
-    return;
-  }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-
-  timer.textContent = `${days} days • ${hours} hours • ${minutes} minutes`;
-}, 1000);
 
 const currentStreak = calculateCurrentStreak(dailyLogs);
 const longestStreak = calculateLongestStreak(dailyLogs);
@@ -324,3 +334,26 @@ bestEl.textContent = best;
 // Cap visual bar at 30 days for aesthetics
 const capped = Math.min(current, 30);
 streakFill.style.width = `${(capped / 30) * 100}%`;
+
+// ================== SINGLE GLOBAL TIMER ==================
+const targetDate = new Date("2027-02-06T00:00:00").getTime();
+let latestTimeString = "";
+
+setInterval(() => {
+  const now = Date.now();
+  const diff = targetDate - now;
+
+  if (diff <= 0) {
+    latestTimeString = "00:00:00";
+    return;
+  }
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  latestTimeString =
+    `${hours.toString().padStart(2, "0")}:` +
+    `${minutes.toString().padStart(2, "0")}:` +
+    `${seconds.toString().padStart(2, "0")}`;
+}, 1000);

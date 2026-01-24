@@ -324,3 +324,27 @@ h3 {
   font-size: 0.8rem;
   color: #94a3b8;
 }
+/* ===== GATE TIMER MODAL ===== */
+
+.gate-timer {
+  position: relative;
+  text-align: center;
+}
+
+.gate-timer img {
+  width: 100%;
+  border-radius: 14px;
+}
+
+/* Timer box aligned near pocket watch */
+.gate-timer .timer-box {
+  position: absolute;
+  bottom: 12%;
+  right: 10%;
+  background: #020617;
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #38bdf8;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+}
