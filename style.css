@@ -339,12 +339,24 @@ h3 {
 /* Timer box aligned near pocket watch */
 .gate-timer .timer-box {
   position: absolute;
-  bottom: 12%;
-  right: 10%;
-  background: #020617;
-  padding: 0.45rem 0.8rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
+
+  /* precise clock alignment */
+  top: 46%;
+  right: 13%;
+  transform: translateY(-50%);
+
+  /* size matches clock diameter */
+  min-width: 95px;
+  text-align: center;
+
+  background: rgba(2, 6, 23, 0.9);
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
   color: #38bdf8;
   box-shadow: 0 8px 25px rgba(0,0,0,0.5);
 }

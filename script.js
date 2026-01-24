@@ -86,6 +86,7 @@ function calculateLongestStreak(logs) {
 
 // ================== MODAL ==================
 function closeModal() {
+  stopGateTimerLive();
   backdrop.classList.remove("active");
   modal.classList.remove("active");
 
@@ -121,6 +122,7 @@ if (openGateTimerBtn) {
 
     const box = document.getElementById("gateTimerBox");
     if (box) box.textContent = latestTimeString;
+      startGateTimerLive();
   });
 }
 
@@ -337,3 +339,25 @@ setInterval(() => {
     `${minutes.toString().padStart(2, "0")}:` +
     `${seconds.toString().padStart(2, "0")}`;
 }, 1000);
+
+// ================== LIVE MODAL TIMER BINDING ==================
+let gateTimerInterval = null;
+
+function startGateTimerLive() {
+  const box = document.getElementById("gateTimerBox");
+  if (!box) return;
+
+  // prevent duplicate intervals
+  if (gateTimerInterval) clearInterval(gateTimerInterval);
+
+  gateTimerInterval = setInterval(() => {
+    box.textContent = latestTimeString;
+  }, 1000);
+}
+
+function stopGateTimerLive() {
+  if (gateTimerInterval) {
+    clearInterval(gateTimerInterval);
+    gateTimerInterval = null;
+  }
+}
