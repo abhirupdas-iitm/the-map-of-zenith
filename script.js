@@ -236,7 +236,7 @@ const completedWeeks = {
       <li>PYQs: LA + Hashing</li>
     </ul>
   `,
-  5:
+  5: `
     <strong>Week 5 (Jan 24 - Jan 30)</strong>
     <ul class="week-list">
       <li>Maths: Probability basics</li>
