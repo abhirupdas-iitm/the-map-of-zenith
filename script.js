@@ -235,6 +235,14 @@ const completedWeeks = {
       <li>DBMS: SQL joins, subqueries</li>
       <li>PYQs: LA + Hashing</li>
     </ul>
+  `,
+  5:
+    <strong>Week 5 (Jan 24 - Jan 30)</strong>
+    <ul class="week-list">
+      <li>Maths: Probability basics</li>
+      <li>DSA: Sorting (bubble, Insertion, Selection)</li>
+      <li>DBMS: Normalization (1NF-3NF)</li>
+      <li>PYQs: Probability + Sorting</li>
   `
 };
 
