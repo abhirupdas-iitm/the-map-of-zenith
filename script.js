@@ -1,10 +1,10 @@
 // ================== CONFIG ==================
-const START_DATE = new Date("2025-12-27T00:00:00");
+const START_DATE = new Date("2026-02-01T00:00:00");
 const TOTAL_WEEKS = 52;
 const TOTAL_DAYS = 365;
 
-// ✅ SINGLE authoritative target date (FIX)
-const targetDate = new Date("2027-02-06T00:00:00").getTime();
+// ✅ SINGLE authoritative target date
+const targetDate = new Date("2027-02-01T00:00:00").getTime();
 
 // ================== ELEMENTS ==================
 const toggleBtn = document.getElementById("toggleProgress");
@@ -43,45 +43,10 @@ const dailyLogs = loadLogs();
 // Allow log entry ONLY for today
 if (!dailyLogs[todayKey()]) {
   const entry = prompt("Write today's log (cannot be changed later):");
-
   if (entry && entry.trim()) {
     dailyLogs[todayKey()] = entry.trim();
     saveLogs(dailyLogs);
   }
-}
-
-function calculateCurrentStreak(logs) {
-  let streak = 0;
-  let day = todayKey();
-
-  while (logs[day]) {
-    streak++;
-    day = previousDay(day);
-  }
-
-  return streak;
-}
-
-function calculateLongestStreak(logs) {
-  const dates = Object.keys(logs).sort();
-  let longest = 0;
-  let current = 0;
-
-  for (let i = 0; i < dates.length; i++) {
-    if (i === 0) {
-      current = 1;
-    } else {
-      const expected = previousDay(dates[i]);
-      if (dates[i - 1] === expected) {
-        current++;
-      } else {
-        current = 1;
-      }
-    }
-    longest = Math.max(longest, current);
-  }
-
-  return longest;
 }
 
 // ================== MODAL ==================
@@ -122,7 +87,7 @@ if (openGateTimerBtn) {
 
     const box = document.getElementById("gateTimerBox");
     if (box) box.textContent = latestTimeString;
-      startGateTimerLive();
+    startGateTimerLive();
   });
 }
 
@@ -192,57 +157,21 @@ const daysPassed = Math.floor(
   (today - START_DATE) / (1000 * 60 * 60 * 24)
 );
 
-const progress = Math.min(daysPassed / TOTAL_DAYS, 1);
+const progress = Math.min(Math.max(daysPassed / TOTAL_DAYS, 0), 1);
 document.querySelector(".progress-fill").style.width =
   `${progress * 100}%`;
 
 // ================== COMPLETED WEEKS CONTENT ==================
 const completedWeeks = {
   1: `
-    <strong>Week 1 (Dec 27 – Jan 2)</strong>
+    <strong>Week 1 (Feb 1 – Feb 7)</strong>
     <ul class="week-list">
       <li>Maths: Discrete Math (Sets, Logic, Relations)</li>
       <li>DSA: Arrays, Stacks, Queues</li>
       <li>DBMS: ER Model, Relational Model</li>
       <li>PYQs: Discrete + Arrays</li>
-      <li>Admin: IITM term orientation</li>
+      <li>Admin: IITM term settling</li>
     </ul>
-  `,
-  2: `
-    <strong>Week 2 (Jan 3 – Jan 9)</strong>
-    <ul class="week-list">
-      <li>Maths: Functions, Graph basics</li>
-      <li>DSA: Linked Lists</li>
-      <li>DBMS: Relational Algebra</li>
-      <li>PYQs: Discrete full + LL</li>
-      <li>IITM: Lectures + Assignment batch</li>
-    </ul>
-  `,
-  3: `
-    <strong>Week 3 (Jan 10 – Jan 16)</strong>
-    <ul class="week-list">
-      <li>Maths: Linear Algebra (Vector spaces, Rank)</li>
-      <li>DSA: Trees (BST, Traversal)</li>
-      <li>DBMS: SQL Basics</li>
-      <li>PYQs: LA + Trees</li>
-    </ul>
-  `,
-  4: `
-    <strong>Week 4 (Jan 17 - Jan 23)</strong>
-    <ul class="week-list">
-      <li>Maths: Eigenvalues, SVD</li>
-      <li>DSA: Hashing</li>
-      <li>DBMS: SQL joins, subqueries</li>
-      <li>PYQs: LA + Hashing</li>
-    </ul>
-  `,
-  5: `
-    <strong>Week 5 (Jan 24 - Jan 30)</strong>
-    <ul class="week-list">
-      <li>Maths: Probability basics</li>
-      <li>DSA: Sorting (bubble, Insertion, Selection)</li>
-      <li>DBMS: Normalization (1NF-3NF)</li>
-      <li>PYQs: Probability + Sorting</li>
   `
 };
 
@@ -265,10 +194,6 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
 
   if (now > end) {
     week.classList.add("completed");
-
-    if (storedCompletedWeeks.includes(i)) {
-      week.classList.add("completed");
-    }
 
     week.addEventListener("click", () => {
       if (!storedCompletedWeeks.includes(i)) {
@@ -296,12 +221,12 @@ for (let i = 1; i <= TOTAL_WEEKS; i++) {
   weeksGrid.appendChild(week);
 }
 
-// ================== STREAK UI BINDING ==================
+// ================== STREAK UI ==================
 const streakEl = document.getElementById("currentStreak");
 const bestEl = document.getElementById("bestStreak");
 const streakFill = document.getElementById("streakFill");
 
-const { current, best } = (function computeStreaks(logs) {
+(function computeStreaks(logs) {
   const dates = Object.keys(logs).sort();
   let current = 0;
   let best = 0;
@@ -317,21 +242,16 @@ const { current, best } = (function computeStreaks(logs) {
     best = Math.max(best, current);
   }
 
-  return { current, best };
+  streakEl.textContent = current;
+  bestEl.textContent = best;
+  streakFill.style.width = `${Math.min(current, 30) / 30 * 100}%`;
 })(dailyLogs);
 
-streakEl.textContent = current;
-bestEl.textContent = best;
-
-const capped = Math.min(current, 30);
-streakFill.style.width = `${(capped / 30) * 100}%`;
-
-// ================== SINGLE GLOBAL TIMER ==================
+// ================== GLOBAL TIMER ==================
 let latestTimeString = "";
 
 setInterval(() => {
-  const now = Date.now();
-  const diff = targetDate - now;
+  const diff = targetDate - Date.now();
 
   if (diff <= 0) {
     latestTimeString = "00:00:00";
@@ -348,14 +268,13 @@ setInterval(() => {
     `${seconds.toString().padStart(2, "0")}`;
 }, 1000);
 
-// ================== LIVE MODAL TIMER BINDING ==================
+// ================== LIVE MODAL TIMER ==================
 let gateTimerInterval = null;
 
 function startGateTimerLive() {
   const box = document.getElementById("gateTimerBox");
   if (!box) return;
 
-  // prevent duplicate intervals
   if (gateTimerInterval) clearInterval(gateTimerInterval);
 
   gateTimerInterval = setInterval(() => {
@@ -369,3 +288,5 @@ function stopGateTimerLive() {
     gateTimerInterval = null;
   }
 }
+
+hehe
