@@ -172,7 +172,17 @@ const completedWeeks = {
       <li>PYQs: Discrete + Arrays</li>
       <li>Admin: IITM term settling</li>
     </ul>
+  `,
+  2: `
+    <strong>Week 2 (Feb 8 – Feb 14)</strong>
+    <ul class="week-list">
+      <li>Maths: Functions, Graph Basics</li>
+      <li>DSA: Linked Lists</li>
+      <li>DBMS: Relational Algebra</li>
+      <li>PYQs: Discrete full + LL</li>
+    </ul>
   `
+
 };
 
 // ================== HELPERS ==================
