@@ -186,8 +186,17 @@ const completedWeeks = {
       <li>DBMS: Relational Algebra</li>
       <li>PYQs: Discrete full + LL</li>
     </ul>
+  `,
+  3: `
+    <strong>Week 3 (Feb 15 – Feb 21)</strong>
+    <ul class="week-list">
+      <li>Maths: Linear Alegbra (Vector Spaces and Rank)</li>
+      <li>DSA: Trees (BSTs, Traversals)</li>
+      <li>DBMS: SQL Basics</li>
+      <li>PYQs: LA + Trees</li>
+      <li>IITM Quiz-1 proximity → reducing PYQs volume, not theory</li>
+    </ul>
   `
-
 };
 
 // ================== HELPERS ==================
