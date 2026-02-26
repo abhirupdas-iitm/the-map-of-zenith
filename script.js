@@ -450,3 +450,117 @@ gateTimerInterval=null;
 }
 
 }
+
+// ================== ANALYTICS BUTTON ==================
+const openAnalyticsBtn = document.getElementById("openAnalytics");
+
+if (openAnalyticsBtn) {
+
+openAnalyticsBtn.addEventListener("click", () => {
+
+modalContent.innerHTML = `
+<h3>Performance vs Emotional State</h3>
+<canvas id="analyticsChart"></canvas>
+`;
+
+backdrop.classList.remove("hidden");
+modal.classList.remove("hidden");
+
+requestAnimationFrame(() => {
+backdrop.classList.add("active");
+modal.classList.add("active");
+});
+
+renderAnalyticsChart();
+
+});
+
+}
+
+
+// ================== ANALYTICS CHART ==================
+function renderAnalyticsChart() {
+
+const ctx = document.getElementById("analyticsChart");
+
+const logs = loadLogs();
+
+const dates = Object.keys(logs).sort();
+
+const academic = [];
+const emotional = [];
+
+dates.forEach(date => {
+
+const log = logs[date];
+
+if (log.performance !== undefined && log.rating !== undefined) {
+
+academic.push(log.performance);
+emotional.push(log.rating);
+
+}
+
+});
+
+new Chart(ctx, {
+
+type: "line",
+
+data: {
+
+labels: dates,
+
+datasets: [
+
+{
+label: "Academic Output",
+data: academic,
+borderColor: "#38bdf8",
+backgroundColor: "transparent",
+tension: 0.35
+},
+
+{
+label: "Emotional State",
+data: emotional,
+borderColor: "#22d3ee",
+backgroundColor: "transparent",
+tension: 0.35
+}
+
+]
+
+},
+
+options: {
+
+responsive: true,
+
+plugins: {
+legend: {
+labels: {
+color: "#e5e7eb"
+}
+}
+},
+
+scales: {
+
+x: {
+ticks: { color: "#94a3b8" }
+},
+
+y: {
+min: 0,
+max: 10,
+ticks: { color: "#94a3b8" }
+}
+
+}
+
+}
+
+});
+
+}
