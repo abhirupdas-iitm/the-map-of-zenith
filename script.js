@@ -355,26 +355,34 @@ document
 .style.width =
 `${progress * 100}%`;
 
-// ================== COMPLETED WEEKS CONTENT ==================
+// ================== COMPLETED WEEKS CONTENT ================== 
 const completedWeeks = {
-  1: `
-    <strong>Week 1 (Feb 1 – Feb 7)</strong>
-    <ul class="week-list">
-      <li>Maths: Discrete Math</li>
-    </ul>
-  `,
-  2: `
-    <strong>Week 2 (Feb 8 – Feb 14)</strong>
-    <ul class="week-list">
-      <li>Maths: Functions</li>
-    </ul>
-  `,
-  3: `
-    <strong>Week 3 (Feb 15 – Feb 21)</strong>
-    <ul class="week-list">
-      <li>Maths: Linear Algebra</li>
-    </ul>
-  `
+  1:
+   <strong>Week 1 (Feb 1 – Feb 7)</strong> 
+   <ul class="week-list"> 
+   <li>Maths: Discrete Math (Sets, Logic, Relations)</li> 
+   <li>DSA: Arrays, Stacks, Queues</li> 
+   <li>DBMS: ER Model, Relational Model</li> 
+   <li>PYQs: Discrete + Arrays</li> 
+   <li>Admin: IITM term settling</li> 
+   </ul> , 
+  2: 
+   <strong>Week 2 (Feb 8 – Feb 14)</strong> 
+   <ul class="week-list"> 
+   <li>Maths: Functions, Graph Basics</li> 
+   <li>DSA: Linked Lists</li> 
+   <li>DBMS: Relational Algebra</li> 
+   <li>PYQs: Discrete full + LL</li> 
+   </ul> , 
+  3: 
+   <strong>Week 3 (Feb 15 – Feb 21)</strong> 
+   <ul class="week-list"> 
+   <li>Maths: Linear Alegbra (Vector Spaces and Rank)</li> 
+   <li>DSA: Trees (BSTs, Traversals)</li> 
+   <li>DBMS: SQL Basics</li> 
+   <li>PYQs: LA + Trees</li> 
+   <li>IITM Quiz-1 proximity → reducing PYQs volume, not theory</li> 
+   </ul> 
 };
 
 // ================== HELPERS ==================
