@@ -255,6 +255,10 @@ if (submitDailyLogBtn) {
 	
 };
 
+});
+
+}
+
 // ================== GATE TIMER MODAL ==================
 const openGateTimerBtn = document.getElementById("openGateTimer");
 
