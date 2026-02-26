@@ -385,3 +385,15 @@ label {
   color: #cbd5e1;
   font-size: 0.9rem;
 }
+
+.error-text {
+color: #ef4444;
+font-size: 0.8rem;
+margin-left: 6px;
+}
+
+.blue-slider {
+width: 100%;
+accent-color: #38bdf8;
+margin-bottom: 1rem;
+}
