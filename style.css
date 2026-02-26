@@ -360,3 +360,28 @@ h3 {
   color: #38bdf8;
   box-shadow: 0 8px 25px rgba(0,0,0,0.5);
 }
+
+/* ================== DAILY LOG FORM ================== */
+
+input,
+textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+
+  border-radius: 6px;
+  border: 1px solid #334155;
+
+  background: #020617;
+  color: #e5e7eb;
+
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
