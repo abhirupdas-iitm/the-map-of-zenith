@@ -83,7 +83,8 @@ backdrop.addEventListener("click", closeModal);
 
 // ================== DAILY LOG FORM ==================
 if (submitDailyLogBtn) {
-  submitDailyLogBtn.addEventListener("click", () => {
+
+submitDailyLogBtn.addEventListener("click", () => {
 
 	if (dailyLogs[todayKey()] && dailyLogs[todayKey()].hours !== undefined) {
 	  alert("Today's structured log already exists.");
@@ -97,77 +98,43 @@ if (submitDailyLogBtn) {
 	Hours Studied (0–14)
 	<span id="hoursError" class="error-text"></span>
 	</label>
-	<input
-	type="number"
-	id="logHours"
-	min="0"
-	max="14"
-	step="0.5"
-	placeholder="Enter hours (max 14)"
-	required
-	>
+	<input type="number" id="logHours" min="0" max="14" step="0.5">
 	
 	<label>
 	Tasks Completed (describe briefly)
 	<span id="tasksError" class="error-text"></span>
 	</label>
-	<textarea
-	id="logTasks"
-	placeholder="Must contain words"
-	required
-	></textarea>
+	<textarea id="logTasks"></textarea>
 	
 	<label>
 	Plan Adherence: <span id="adherenceValue">5</span>/10
 	</label>
-	<input
-	type="range"
-	id="logAdherence"
-	min="0"
-	max="10"
-	value="5"
-	class="blue-slider"
-	>
+	<input type="range" id="logAdherence" min="0" max="10" value="5" class="blue-slider">
 	
 	<label>
 	Self Rating: <span id="ratingValue">5</span>/10
 	</label>
-	<input
-	type="range"
-	id="logRating"
-	min="0"
-	max="10"
-	value="5"
-	class="blue-slider"
-	>
+	<input type="range" id="logRating" min="0" max="10" value="5" class="blue-slider">
 	
 	<label>
 	Reflection
 	<span id="reflectionError" class="error-text"></span>
 	</label>
-	<textarea
-	id="logReflection"
-	placeholder="Must contain real words"
-	required
-	></textarea>
+	<textarea id="logReflection"></textarea>
 	
 	<button id="saveLogBtn" class="progress-btn">
 	Save Log
-      </button>
-      `;
-	
-// live slider labels
+	</button>
+	`;
+
 	const adherenceSlider = document.getElementById("logAdherence");
 	const ratingSlider = document.getElementById("logRating");
-	
-	const adherenceValue = document.getElementById("adherenceValue");
-	const ratingValue = document.getElementById("ratingValue");
-	
-	adherenceSlider.oninput = () =>
-	  adherenceValue.textContent = adherenceSlider.value;
-	
-	ratingSlider.oninput = () =>
-	  ratingValue.textContent = ratingSlider.value;
+
+	adherenceSlider.oninput =
+	  () => document.getElementById("adherenceValue").textContent = adherenceSlider.value;
+
+	ratingSlider.oninput =
+	  () => document.getElementById("ratingValue").textContent = ratingSlider.value;
 
     backdrop.classList.remove("hidden");
     modal.classList.remove("hidden");
@@ -178,67 +145,42 @@ if (submitDailyLogBtn) {
     });
 
 	document.getElementById("saveLogBtn").onclick = () => {
-	
-	const hours =
-	Number(document.getElementById("logHours").value);
-	
-	const tasks =
-	document.getElementById("logTasks").value.trim();
-	
-	const adherence =
-	Number(document.getElementById("logAdherence").value);
-	
-	const rating =
-	Number(document.getElementById("logRating").value);
-	
-	const reflection =
-	document.getElementById("logReflection").value.trim();
-	
+
+	const hours = Number(document.getElementById("logHours").value);
+	const tasks = document.getElementById("logTasks").value.trim();
+	const adherence = Number(document.getElementById("logAdherence").value);
+	const rating = Number(document.getElementById("logRating").value);
+	const reflection = document.getElementById("logReflection").value.trim();
+
 	let valid = true;
-	
-	// reset errors
+
 	document.getElementById("hoursError").textContent = "";
 	document.getElementById("tasksError").textContent = "";
 	document.getElementById("reflectionError").textContent = "";
-	
-	// hours validation
-	if (isNaN(hours) || hours < 0 || hours > 14) {
-	
-	document.getElementById("hoursError").textContent =
-	" Input must be between 0–14 hours";
-	
-	valid = false;
-	}
-	
-	// tasks must contain letters
-	if (!/[a-zA-Z]/.test(tasks)) {
 
-	document.getElementById("tasksError").textContent =
-	" Must contain real words";
-	
-	valid = false;
+	if (isNaN(hours) || hours < 0 || hours > 14) {
+	  document.getElementById("hoursError").textContent = " Input must be between 0–14 hours";
+	  valid = false;
 	}
-	
-	// reflection must contain letters
+
+	if (!/[a-zA-Z]/.test(tasks)) {
+	  document.getElementById("tasksError").textContent = " Must contain real words";
+	  valid = false;
+	}
+
 	if (!/[a-zA-Z]/.test(reflection)) {
-	
-	document.getElementById("reflectionError").textContent =
-	" Reflection must contain words";
-	
-	valid = false;
+	  document.getElementById("reflectionError").textContent = " Reflection must contain words";
+	  valid = false;
 	}
-	
+
 	if (!valid) return;
-	
-	// performance calculation
+
 	const performance =
 	(hours / 11 * 4) +
 	(adherence * 0.3) +
 	(rating * 0.3);
-	
-	// save immutable log
+
 	dailyLogs[todayKey()] = {
-	
 	hours,
 	tasks,
 	adherence,
@@ -246,18 +188,16 @@ if (submitDailyLogBtn) {
 	reflection,
 	performance: Math.min(performance, 10),
 	timestamp: Date.now()
-	
 	};
-	
+
 	saveLogs(dailyLogs);
-	
 	closeModal();
-	
-};
 
-});
+	};
 
-}
+}); // THIS was the required closing line
+
+} // THIS was the required closing brace
 
 // ================== GATE TIMER MODAL ==================
 const openGateTimerBtn = document.getElementById("openGateTimer");
