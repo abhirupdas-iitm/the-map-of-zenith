@@ -467,6 +467,13 @@ modalContent.innerHTML = `
 <label>End Date</label>
 <input type="date" id="analyticsEnd">
 
+<div style="margin-top:10px;margin-bottom:10px;">
+<button id="range7" class="progress-btn">Last 7 Days</button>
+<button id="range30" class="progress-btn">Last 30 Days</button>
+<button id="range90" class="progress-btn">Last 90 Days</button>
+<button id="rangeAll" class="progress-btn">All Time</button>
+</div>
+
 <button id="applyAnalyticsRange" class="progress-btn">
 Apply Range
 </button>
@@ -485,6 +492,38 @@ modal.classList.add("active");
 renderAnalyticsChart();
 document.getElementById("applyAnalyticsRange").onclick = () => {
 renderAnalyticsChart();
+};
+
+function setRange(days) {
+
+const end = new Date();
+const start = new Date();
+
+start.setDate(end.getDate() - days);
+
+document.getElementById("analyticsStart").value =
+start.toISOString().split("T")[0];
+
+document.getElementById("analyticsEnd").value =
+end.toISOString().split("T")[0];
+
+renderAnalyticsChart();
+
+}
+
+document.getElementById("range7").onclick = () => setRange(7);
+
+document.getElementById("range30").onclick = () => setRange(30);
+
+document.getElementById("range90").onclick = () => setRange(90);
+
+document.getElementById("rangeAll").onclick = () => {
+
+document.getElementById("analyticsStart").value = "";
+document.getElementById("analyticsEnd").value = "";
+
+renderAnalyticsChart();
+
 };
 
 });
