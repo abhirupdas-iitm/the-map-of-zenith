@@ -460,6 +460,17 @@ openAnalyticsBtn.addEventListener("click", () => {
 
 modalContent.innerHTML = `
 <h3>Performance vs Emotional State</h3>
+
+<label>Start Date</label>
+<input type="date" id="analyticsStart">
+
+<label>End Date</label>
+<input type="date" id="analyticsEnd">
+
+<button id="applyAnalyticsRange" class="progress-btn">
+Apply Range
+</button>
+
 <canvas id="analyticsChart"></canvas>
 `;
 
@@ -472,6 +483,9 @@ modal.classList.add("active");
 });
 
 renderAnalyticsChart();
+document.getElementById("applyAnalyticsRange").onclick = () => {
+renderAnalyticsChart();
+};
 
 });
 
@@ -485,7 +499,16 @@ const ctx = document.getElementById("analyticsChart");
 
 const logs = loadLogs();
 
-const dates = Object.keys(logs).sort();
+const start = document.getElementById("analyticsStart")?.value;
+const end = document.getElementById("analyticsEnd")?.value;
+
+let dates = Object.keys(logs).sort();
+
+if (start)
+dates = dates.filter(d => d >= start);
+
+if (end)
+dates = dates.filter(d => d <= end);
 
 const academic = [];
 const emotional = [];
