@@ -86,10 +86,10 @@ if (submitDailyLogBtn) {
 
 submitDailyLogBtn.addEventListener("click", () => {
 
-	if (dailyLogs[todayKey()] && dailyLogs[todayKey()].hours !== undefined) {
-	  alert("Today's structured log already exists.");
-	  return;
-	}
+    if (dailyLogs[todayKey()]) {
+      alert("Log already submitted for today. Entries are immutable.");
+      return;
+    }
 	
 	modalContent.innerHTML = `
 	<h3>Daily Log — ${todayKey()}</h3>
@@ -371,7 +371,13 @@ for (let i=1;i<=TOTAL_WEEKS;i++){
 // ================== STREAK ==================
 (function(){
 
-const dates=Object.keys(dailyLogs).sort();
+let dates = Object.keys(logs)
+.filter(d =>
+    logs[d].performance !== undefined &&
+    logs[d].rating !== undefined &&
+    logs[d].timestamp !== undefined
+)
+.sort((a,b) => new Date(a) - new Date(b));
 
 let current=0;
 let best=0;
