@@ -16,8 +16,10 @@ const modal = document.getElementById("modal");
 const modalContent = document.getElementById("modalContent");
 const openLogsBtn = document.getElementById("openLogs");
 const submitDailyLogBtn = document.getElementById("submitDailyLog");
+const openAnalyticsBtn = document.getElementById("openAnalytics");
 
 let activeWeek = null;
+
 
 // ================== DAILY LOG STORAGE ==================
 function loadLogs() {
@@ -51,35 +53,46 @@ function previousDay(dateStr) {
 
 const dailyLogs = loadLogs();
 
+
 // ================== FALLBACK PROMPT ==================
 if (!dailyLogs[todayKey()]) {
+
   const entry = prompt("Write today's log (fallback mode):");
 
   if (entry && entry.trim()) {
+
     dailyLogs[todayKey()] = {
       reflection: entry.trim(),
       timestamp: Date.now()
     };
+
     saveLogs(dailyLogs);
   }
 }
 
+
 // ================== MODAL ==================
 function closeModal() {
+
   stopGateTimerLive();
 
   backdrop.classList.remove("active");
   modal.classList.remove("active");
 
   setTimeout(() => {
+
     backdrop.classList.add("hidden");
     modal.classList.add("hidden");
+
     modalContent.innerHTML = "";
+
     activeWeek = null;
+
   }, 200);
 }
 
 backdrop.addEventListener("click", closeModal);
+
 
 // ================== DAILY LOG FORM ==================
 if (submitDailyLogBtn) {
@@ -195,9 +208,10 @@ submitDailyLogBtn.addEventListener("click", () => {
 
 	};
 
-}); // THIS was the required closing line
+});
 
-} // THIS was the required closing brace
+}
+
 
 // ================== GATE TIMER MODAL ==================
 const openGateTimerBtn = document.getElementById("openGateTimer");
@@ -371,6 +385,8 @@ for (let i=1;i<=TOTAL_WEEKS;i++){
 // ================== STREAK ==================
 (function(){
 
+const logs = dailyLogs;
+
 let dates = Object.keys(logs)
 .filter(d =>
     logs[d].performance !== undefined &&
@@ -405,6 +421,7 @@ document.getElementById("streakFill").style.width=
   `${Math.min(current,30)/30*100}%`;
 
 })();
+
 
 // ================== TIMER ==================
 let latestTimeString="";
