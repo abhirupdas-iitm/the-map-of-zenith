@@ -584,15 +584,15 @@ datasets: [
 {
 label: "Academic Output",
 data: academic,
-borderColor: "#38bdf8",
+borderColor: "#22c55e",
 backgroundColor: "transparent",
 tension: 0.35
 },
 
 {
-label: "Emotional State",
+label: "Mental State",
 data: emotional,
-borderColor: "#22d3ee",
+borderColor: "#ef4444",
 backgroundColor: "transparent",
 tension: 0.35
 }
