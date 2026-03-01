@@ -385,36 +385,46 @@ for (let i=1;i<=TOTAL_WEEKS;i++){
 // ================== STREAK ==================
 (function(){
 
-const logs = dailyLogs;
+const logs = loadLogs();
 
-let dates = Object.keys(logs)
-.filter(d => logs[d].timestamp !== undefined)
+const dates = Object.keys(logs)
+.filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
 .sort((a,b) => new Date(a) - new Date(b));
 
-let current=0;
-let best=0;
+let current = 0;
+let best = 0;
+let running = 0;
 
 for(let i=0;i<dates.length;i++){
 
-  if(i===0) current=1;
-
+  if(i===0){
+    running = 1;
+  }
   else{
 
-    const diff=
-      (new Date(dates[i])-
-       new Date(dates[i-1]))
-      /(1000*60*60*24);
+    const prev = new Date(dates[i-1]);
+    const curr = new Date(dates[i]);
 
-    current=diff===1?current+1:1;
+    const diff =
+      (curr - prev)/(1000*60*60*24);
+
+    if(diff === 1){
+      running++;
+    }else{
+      running = 1;
+    }
   }
 
-  best=Math.max(best,current);
+  best = Math.max(best, running);
 }
 
-document.getElementById("currentStreak").textContent=current;
-document.getElementById("bestStreak").textContent=best;
-document.getElementById("streakFill").style.width=
-  `${Math.min(current,30)/30*100}%`;
+current = running;
+
+document.getElementById("currentStreak").textContent = current;
+document.getElementById("bestStreak").textContent = best;
+
+document.getElementById("streakFill").style.width =
+`${Math.min(current,30)/30*100}%`;
 
 })();
 
@@ -558,7 +568,12 @@ const logs = loadLogs();
 const start = document.getElementById("analyticsStart")?.value;
 const end = document.getElementById("analyticsEnd")?.value;
 
-let dates = Object.keys(logs).sort();
+let dates = Object.keys(logs)
+.filter(d =>
+  logs[d].performance !== undefined &&
+  logs[d].timestamp !== undefined
+)
+.sort((a,b) => new Date(a) - new Date(b));
 
 if (start)
 dates = dates.filter(d => d >= start);
