@@ -475,8 +475,6 @@ gateTimerInterval=null;
 }
 
 // ================== ANALYTICS BUTTON ==================
-const openAnalyticsBtn = document.getElementById("openAnalytics");
-
 if (openAnalyticsBtn) {
 
 openAnalyticsBtn.addEventListener("click", () => {
