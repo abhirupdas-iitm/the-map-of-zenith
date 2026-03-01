@@ -388,11 +388,7 @@ for (let i=1;i<=TOTAL_WEEKS;i++){
 const logs = dailyLogs;
 
 let dates = Object.keys(logs)
-.filter(d =>
-    logs[d].performance !== undefined &&
-    logs[d].rating !== undefined &&
-    logs[d].timestamp !== undefined
-)
+.filter(d => logs[d].timestamp !== undefined)
 .sort((a,b) => new Date(a) - new Date(b));
 
 let current=0;
