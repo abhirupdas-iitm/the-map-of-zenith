@@ -339,6 +339,16 @@ const completedWeeks = {
 <li>PYQs: LA + Trees</li>
 <li>IITM Quiz-1 proximity → reducing PYQs volume, not theory</li>
 </ul>
+`,
+
+  4: `
+<strong>Week 4 (Feb 22 – Feb 28)</strong>
+<ul class="week-list">
+<li>Maths: Eigenvalues, SVD</li>
+<li>DSA: Hashing</li>
+<li>DBMS: SQL Joins, Subqueries</li>
+<li>PYQs: LA + Hashing</li>
+</ul>
 `
 
 };
