@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  const ADMIN_PASSWORD = "your-new-password-here";
-
   const authScreen = document.getElementById("authScreen");
   const loginBtn = document.getElementById("loginBtn");
   const guestBtn = document.getElementById("guestBtn");
