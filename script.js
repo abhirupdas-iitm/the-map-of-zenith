@@ -99,7 +99,15 @@ if (submitDailyLogBtn) {
 
 submitDailyLogBtn.addEventListener("click", () => {
 
-    if (dailyLogs[todayKey()]) {
+    const today = todayKey();
+    const todayLog = dailyLogs[today];
+     
+    const isFullSubmission =
+      todayLog &&
+      todayLog.hours !== undefined &&
+      todayLog.performance !== undefined;
+     
+    if (isFullSubmission) {
       alert("Log already submitted for today. Entries are immutable.");
       return;
     }
