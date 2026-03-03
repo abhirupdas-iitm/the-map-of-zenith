@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", function () {
 // ================== CONFIG ==================
 const START_DATE = new Date("2026-02-01T00:00:00");
 const TOTAL_WEEKS = 52;
@@ -676,3 +677,5 @@ ticks: { color: "#94a3b8" }
 });
 
 }
+
+});

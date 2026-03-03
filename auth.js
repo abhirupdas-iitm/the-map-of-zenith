@@ -1,6 +1,6 @@
 // ================== AUTH SYSTEM ==================
 
-const ADMIN_PASSWORD = "zenith-2026"; // change this
+const ADMIN_PASSWORD = "IamAbhirupDas"; // change this
 
 const authScreen = document.getElementById("authScreen");
 const loginBtn = document.getElementById("loginBtn");
@@ -16,7 +16,7 @@ function getRole() {
 }
 
 function hideAuth() {
-  authScreen.style.display = "none";
+  authScreen.remove();
 }
 
 function applyRole() {
