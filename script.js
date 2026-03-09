@@ -358,8 +358,17 @@ const completedWeeks = {
 <li>DBMS: SQL Joins, Subqueries</li>
 <li>PYQs: LA + Hashing</li>
 </ul>
-`
+`,
 
+  5: `
+<strong>Week 5 (Mar 1 – Mar 7)</strong>
+<ul class="week-list">
+<li>Maths: Probability Basics</li>
+<li>DSA: Sorting (Bubble, Insertion and Selection)</li>
+<li>DBMS: Normalization (1NF - 3NF)</li>
+<li>PYQs: Probability + Sorting</li>
+</ul>
+`
 };
 
 // ================== GENERATE WEEKS ==================
