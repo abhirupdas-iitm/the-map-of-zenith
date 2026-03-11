@@ -1,324 +1,322 @@
 document.addEventListener("DOMContentLoaded", function () {
-// ================== CONFIG ==================
-const START_DATE = new Date("2026-02-01T00:00:00");
-const TOTAL_WEEKS = 52;
-const TOTAL_DAYS = 365;
+    // ================== CONFIG ==================
+    const START_DATE = new Date("2026-02-01T00:00:00");
+    const TOTAL_WEEKS = 52;
+    const TOTAL_DAYS = 365;
 
-// ✅ SINGLE authoritative target date
-const targetDate = new Date("2027-02-01T00:00:00").getTime();
+    // ✅ SINGLE authoritative target date
+    const targetDate = new Date("2027-02-01T00:00:00").getTime();
 
-// ================== ELEMENTS ==================
-const toggleBtn = document.getElementById("toggleProgress");
-const progressSection = document.getElementById("progressSection");
-const weeksGrid = document.querySelector(".weeks-grid");
+    // ================== ELEMENTS ==================
+    const toggleBtn = document.getElementById("toggleProgress");
+    const progressSection = document.getElementById("progressSection");
+    const weeksGrid = document.querySelector(".weeks-grid");
 
-const backdrop = document.getElementById("backdrop");
-const modal = document.getElementById("modal");
-const modalContent = document.getElementById("modalContent");
-const openLogsBtn = document.getElementById("openLogs");
-const submitDailyLogBtn = document.getElementById("submitDailyLog");
-const openAnalyticsBtn = document.getElementById("openAnalytics");
+    const backdrop = document.getElementById("backdrop");
+    const modal = document.getElementById("modal");
+    const modalContent = document.getElementById("modalContent");
+    const openLogsBtn = document.getElementById("openLogs");
+    const submitDailyLogBtn = document.getElementById("submitDailyLog");
+    const openAnalyticsBtn = document.getElementById("openAnalytics");
 
-let activeWeek = null;
-
-
-// ================== DAILY LOG STORAGE ==================
-function loadLogs() {
-  const logs = localStorage.getItem("dailyLogs");
-  return logs ? JSON.parse(logs) : {};
-}
-
-function saveLogs(logs) {
-  localStorage.setItem("dailyLogs", JSON.stringify(logs));
-}
-
-function todayKey() {
-  const now = new Date();
-  return `${now.getFullYear()}-${
-    String(now.getMonth() + 1).padStart(2, "0")
-  }-${
-    String(now.getDate()).padStart(2, "0")
-  }`;
-}
-
-function previousDay(dateStr) {
-  const d = new Date(dateStr);
-  d.setDate(d.getDate() - 1);
-
-  return `${d.getFullYear()}-${
-    String(d.getMonth() + 1).padStart(2, "0")
-  }-${
-    String(d.getDate()).padStart(2, "0")
-  }`;
-}
-
-const dailyLogs = loadLogs();
+    let activeWeek = null;
 
 
-// ================== FALLBACK PROMPT ==================
-if (!dailyLogs[todayKey()]) {
-
-  const entry = prompt("Write today's log (fallback mode):");
-
-  if (entry && entry.trim()) {
-
-    dailyLogs[todayKey()] = {
-      reflection: entry.trim(),
-      timestamp: Date.now()
-    };
-
-    saveLogs(dailyLogs);
-  }
-}
-
-
-// ================== MODAL ==================
-function closeModal() {
-
-  stopGateTimerLive();
-
-  backdrop.classList.remove("active");
-  modal.classList.remove("active");
-
-  setTimeout(() => {
-
-    backdrop.classList.add("hidden");
-    modal.classList.add("hidden");
-
-    modalContent.innerHTML = "";
-
-    activeWeek = null;
-
-  }, 200);
-}
-
-backdrop.addEventListener("click", closeModal);
-
-
-// ================== DAILY LOG FORM ==================
-if (submitDailyLogBtn) {
-
-submitDailyLogBtn.addEventListener("click", () => {
-
-    const today = todayKey();
-    const todayLog = dailyLogs[today];
-     
-    const isFullSubmission =
-      todayLog &&
-      todayLog.hours !== undefined &&
-      todayLog.performance !== undefined;
-     
-    if (isFullSubmission) {
-      alert("Log already submitted for today. Entries are immutable.");
-      return;
+    // ================== DAILY LOG STORAGE ==================
+    function loadLogs() {
+        const logs = localStorage.getItem("dailyLogs");
+        return logs ? JSON.parse(logs) : {};
     }
-	
-	modalContent.innerHTML = `
-	<h3>Daily Log — ${todayKey()}</h3>
-	
-	<label>
-	Hours Studied (0–14)
-	<span id="hoursError" class="error-text"></span>
-	</label>
-	<input type="number" id="logHours" min="0" max="14" step="0.5">
-	
-	<label>
-	Tasks Completed (describe briefly)
-	<span id="tasksError" class="error-text"></span>
-	</label>
-	<textarea id="logTasks"></textarea>
-	
-	<label>
-	Plan Adherence: <span id="adherenceValue">5</span>/10
-	</label>
-	<input type="range" id="logAdherence" min="0" max="10" value="5" class="blue-slider">
-	
-	<label>
-	Self Rating: <span id="ratingValue">5</span>/10
-	</label>
-	<input type="range" id="logRating" min="0" max="10" value="5" class="blue-slider">
-	
-	<label>
-	Reflection
-	<span id="reflectionError" class="error-text"></span>
-	</label>
-	<textarea id="logReflection"></textarea>
-	
-	<button id="saveLogBtn" class="progress-btn">
-	Save Log
-	</button>
-	`;
 
-	const adherenceSlider = document.getElementById("logAdherence");
-	const ratingSlider = document.getElementById("logRating");
+    function saveLogs(logs) {
+        localStorage.setItem("dailyLogs", JSON.stringify(logs));
+    }
 
-	adherenceSlider.oninput =
-	  () => document.getElementById("adherenceValue").textContent = adherenceSlider.value;
+    function todayKey() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")
+            }-${String(now.getDate()).padStart(2, "0")
+            }`;
+    }
 
-	ratingSlider.oninput =
-	  () => document.getElementById("ratingValue").textContent = ratingSlider.value;
+    function previousDay(dateStr) {
+        const d = new Date(dateStr);
+        d.setDate(d.getDate() - 1);
 
-    backdrop.classList.remove("hidden");
-    modal.classList.remove("hidden");
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")
+            }-${String(d.getDate()).padStart(2, "0")
+            }`;
+    }
 
-    requestAnimationFrame(() => {
-      backdrop.classList.add("active");
-      modal.classList.add("active");
-    });
-
-	document.getElementById("saveLogBtn").onclick = () => {
-
-	const hours = Number(document.getElementById("logHours").value);
-	const tasks = document.getElementById("logTasks").value.trim();
-	const adherence = Number(document.getElementById("logAdherence").value);
-	const rating = Number(document.getElementById("logRating").value);
-	const reflection = document.getElementById("logReflection").value.trim();
-
-	let valid = true;
-
-	document.getElementById("hoursError").textContent = "";
-	document.getElementById("tasksError").textContent = "";
-	document.getElementById("reflectionError").textContent = "";
-
-	if (isNaN(hours) || hours < 0 || hours > 14) {
-	  document.getElementById("hoursError").textContent = " Input must be between 0–14 hours";
-	  valid = false;
-	}
-
-	if (!/[a-zA-Z]/.test(tasks)) {
-	  document.getElementById("tasksError").textContent = " Must contain real words";
-	  valid = false;
-	}
-
-	if (!/[a-zA-Z]/.test(reflection)) {
-	  document.getElementById("reflectionError").textContent = " Reflection must contain words";
-	  valid = false;
-	}
-
-	if (!valid) return;
-
-	const performance =
-	(hours / 11 * 4) +
-	(adherence * 0.3) +
-	(rating * 0.3);
-
-	dailyLogs[todayKey()] = {
-	hours,
-	tasks,
-	adherence,
-	rating,
-	reflection,
-	performance: Math.min(performance, 10),
-	timestamp: Date.now()
-	};
-
-	saveLogs(dailyLogs);
-	closeModal();
-
-	};
-
-});
-
-}
+    const dailyLogs = loadLogs();
 
 
-// ================== GATE TIMER MODAL ==================
-const openGateTimerBtn = document.getElementById("openGateTimer");
+    // ================== FALLBACK PROMPT ==================
 
-if (openGateTimerBtn) {
+    const role = sessionStorage.getItem("zenith_role");
+    const isAdmin = role === "admin";
 
-  openGateTimerBtn.addEventListener("click", () => {
+    if (isAdmin && !dailyLogs[todayKey()]) {
 
-    modalContent.innerHTML = `
+        const entry = prompt("Write today's log (fallback mode):");
+
+        if (entry && entry.trim()) {
+
+            dailyLogs[todayKey()] = {
+                reflection: entry.trim(),
+                timestamp: Date.now()
+            };
+
+            saveLogs(dailyLogs);
+        }
+    }
+
+    // ================== MODAL ==================
+    function closeModal() {
+
+        stopGateTimerLive();
+
+        backdrop.classList.remove("active");
+        modal.classList.remove("active");
+
+        setTimeout(() => {
+
+            backdrop.classList.add("hidden");
+            modal.classList.add("hidden");
+
+            modalContent.innerHTML = "";
+
+            activeWeek = null;
+
+        }, 200);
+    }
+
+    backdrop.addEventListener("click", closeModal);
+
+
+    // ================== DAILY LOG FORM ==================
+    if (submitDailyLogBtn) {
+
+        submitDailyLogBtn.addEventListener("click", () => {
+
+            const today = todayKey();
+            const todayLog = dailyLogs[today];
+
+            const isFullSubmission =
+                todayLog &&
+                todayLog.hours !== undefined &&
+                todayLog.performance !== undefined;
+
+            if (isFullSubmission) {
+                alert("Log already submitted for today. Entries are immutable.");
+                return;
+            }
+
+            modalContent.innerHTML = `
+        <h3>Daily Log — ${todayKey()}</h3>
+
+        <label>
+        Hours Studied (0–14)
+        <span id="hoursError" class="error-text"></span>
+        </label>
+        <input type="number" id="logHours" min="0" max="14" step="0.5">
+
+        <label>
+        Tasks Completed (describe briefly)
+        <span id="tasksError" class="error-text"></span>
+        </label>
+        <textarea id="logTasks"></textarea>
+
+        <label>
+        Plan Adherence: <span id="adherenceValue">5</span>/10
+        </label>
+        <input type="range" id="logAdherence" min="0" max="10" value="5" class="blue-slider">
+
+        <label>
+        Self Rating: <span id="ratingValue">5</span>/10
+        </label>
+        <input type="range" id="logRating" min="0" max="10" value="5" class="blue-slider">
+
+        <label>
+        Reflection
+        <span id="reflectionError" class="error-text"></span>
+        </label>
+        <textarea id="logReflection"></textarea>
+
+        <button id="saveLogBtn" class="progress-btn">
+        Save Log
+        </button>
+        `;
+
+            const adherenceSlider = document.getElementById("logAdherence");
+            const ratingSlider = document.getElementById("logRating");
+
+            adherenceSlider.oninput =
+                () => document.getElementById("adherenceValue").textContent = adherenceSlider.value;
+
+            ratingSlider.oninput =
+                () => document.getElementById("ratingValue").textContent = ratingSlider.value;
+
+            backdrop.classList.remove("hidden");
+            modal.classList.remove("hidden");
+
+            requestAnimationFrame(() => {
+                backdrop.classList.add("active");
+                modal.classList.add("active");
+            });
+
+            document.getElementById("saveLogBtn").onclick = () => {
+
+                const hours = Number(document.getElementById("logHours").value);
+                const tasks = document.getElementById("logTasks").value.trim();
+                const adherence = Number(document.getElementById("logAdherence").value);
+                const rating = Number(document.getElementById("logRating").value);
+                const reflection = document.getElementById("logReflection").value.trim();
+
+                let valid = true;
+
+                document.getElementById("hoursError").textContent = "";
+                document.getElementById("tasksError").textContent = "";
+                document.getElementById("reflectionError").textContent = "";
+
+                if (isNaN(hours) || hours < 0 || hours > 14) {
+                    document.getElementById("hoursError").textContent = " Input must be between 0–14 hours";
+                    valid = false;
+                }
+
+                if (!/[a-zA-Z]/.test(tasks)) {
+                    document.getElementById("tasksError").textContent = " Must contain real words";
+                    valid = false;
+                }
+
+                if (!/[a-zA-Z]/.test(reflection)) {
+                    document.getElementById("reflectionError").textContent = " Reflection must contain words";
+                    valid = false;
+                }
+
+                if (!valid) return;
+
+                const performance =
+                    (hours / 11 * 4) +
+                    (adherence * 0.3) +
+                    (rating * 0.3);
+
+                dailyLogs[todayKey()] = {
+                    hours,
+                    tasks,
+                    adherence,
+                    rating,
+                    reflection,
+                    performance: Math.min(performance, 10),
+                    timestamp: Date.now()
+                };
+
+                saveLogs(dailyLogs);
+                closeModal();
+
+            };
+
+        });
+
+    }
+
+
+    // ================== GATE TIMER MODAL ==================
+    const openGateTimerBtn = document.getElementById("openGateTimer");
+
+    if (openGateTimerBtn) {
+
+        openGateTimerBtn.addEventListener("click", () => {
+
+            modalContent.innerHTML = `
       <div class="gate-timer">
         <img src="rabbit-clock.png">
         <div class="timer-box" id="gateTimerBox">--:--:--</div>
       </div>
     `;
 
-    backdrop.classList.remove("hidden");
-    modal.classList.remove("hidden");
+            backdrop.classList.remove("hidden");
+            modal.classList.remove("hidden");
 
-    requestAnimationFrame(() => {
-      backdrop.classList.add("active");
-      modal.classList.add("active");
-    });
+            requestAnimationFrame(() => {
+                backdrop.classList.add("active");
+                modal.classList.add("active");
+            });
 
-    startGateTimerLive();
-  });
-}
+            startGateTimerLive();
+        });
+    }
 
-// ================== LOGS MODAL ==================
-if (openLogsBtn) {
+    // ================== LOGS MODAL ==================
+    if (openLogsBtn) {
 
-  openLogsBtn.addEventListener("click", () => {
+        openLogsBtn.addEventListener("click", () => {
 
-    modalContent.innerHTML = "<h3>Daily Logs</h3>";
+            modalContent.innerHTML = "<h3>Daily Logs</h3>";
 
-    const ul = document.createElement("ul");
-    ul.className = "logs-list";
+            const ul = document.createElement("ul");
+            ul.className = "logs-list";
 
-    const keys = Object.keys(dailyLogs).sort().reverse();
+            const keys = Object.keys(dailyLogs).sort().reverse();
 
-    if (!keys.length) ul.innerHTML = "<li>No logs yet.</li>";
+            if (!keys.length) ul.innerHTML = "<li>No logs yet.</li>";
 
-    keys.forEach(date => {
+            keys.forEach(date => {
 
-      const li = document.createElement("li");
+                const li = document.createElement("li");
 
-      const log = dailyLogs[date];
+                const log = dailyLogs[date];
 
-      li.innerHTML = `
+                li.innerHTML = `
         <span class="log-date">${date}</span>
         <span class="log-preview">
           ${log.reflection ? log.reflection.slice(0, 60) : "Structured log"}
         </span>
       `;
 
-      li.onclick = () => {
+                li.onclick = () => {
 
-        modalContent.innerHTML =
-          `<h3>${date}</h3><pre>${
-            JSON.stringify(log, null, 2)
-          }</pre>`;
-      };
+                    modalContent.innerHTML =
+                        `<h3>${date}</h3><pre>${JSON.stringify(log, null, 2)
+                        }</pre>`;
+                };
 
-      ul.appendChild(li);
+                ul.appendChild(li);
+            });
+
+            modalContent.appendChild(ul);
+
+            backdrop.classList.remove("hidden");
+            modal.classList.remove("hidden");
+
+            requestAnimationFrame(() => {
+                backdrop.classList.add("active");
+                modal.classList.add("active");
+            });
+        });
+    }
+
+    // ================== TOGGLE ==================
+    toggleBtn.addEventListener("click", () => {
+        progressSection.classList.toggle("hidden");
     });
 
-    modalContent.appendChild(ul);
+    // ================== YEAR PROGRESS ==================
+    const today = new Date();
 
-    backdrop.classList.remove("hidden");
-    modal.classList.remove("hidden");
+    const daysPassed = Math.floor(
+        (today - START_DATE) / (1000 * 60 * 60 * 24)
+    );
 
-    requestAnimationFrame(() => {
-      backdrop.classList.add("active");
-      modal.classList.add("active");
-    });
-  });
-}
+    const progress = Math.min(Math.max(daysPassed / TOTAL_DAYS, 0), 1);
 
-// ================== TOGGLE ==================
-toggleBtn.addEventListener("click", () => {
-  progressSection.classList.toggle("hidden");
-});
+    document.querySelector(".progress-fill").style.width =
+        `${progress * 100}%`;
 
-// ================== YEAR PROGRESS ==================
-const today = new Date();
+    // ================== COMPLETED WEEKS CONTENT ==================
+    const completedWeeks = {
 
-const daysPassed = Math.floor(
-  (today - START_DATE) / (1000*60*60*24)
-);
-
-const progress = Math.min(Math.max(daysPassed/TOTAL_DAYS,0),1);
-
-document.querySelector(".progress-fill").style.width =
-  `${progress*100}%`;
-
-// ================== COMPLETED WEEKS CONTENT ==================
-const completedWeeks = {
-
-  1: `
+        1: `
 <strong>Week 1 (Feb 1 – Feb 7)</strong>
 <ul class="week-list">
 <li>Maths: Discrete Math (Sets, Logic, Relations)</li>
@@ -329,7 +327,7 @@ const completedWeeks = {
 </ul>
 `,
 
-  2: `
+        2: `
 <strong>Week 2 (Feb 8 – Feb 14)</strong>
 <ul class="week-list">
 <li>Maths: Functions, Graph Basics</li>
@@ -339,7 +337,7 @@ const completedWeeks = {
 </ul>
 `,
 
-  3: `
+        3: `
 <strong>Week 3 (Feb 15 – Feb 21)</strong>
 <ul class="week-list">
 <li>Maths: Linear Alegbra (Vector Spaces and Rank)</li>
@@ -350,7 +348,7 @@ const completedWeeks = {
 </ul>
 `,
 
-  4: `
+        4: `
 <strong>Week 4 (Feb 22 – Feb 28)</strong>
 <ul class="week-list">
 <li>Maths: Eigenvalues, SVD</li>
@@ -360,7 +358,7 @@ const completedWeeks = {
 </ul>
 `,
 
-  5: `
+        5: `
 <strong>Week 5 (Mar 1 – Mar 7)</strong>
 <ul class="week-list">
 <li>Maths: Probability Basics</li>
@@ -369,151 +367,151 @@ const completedWeeks = {
 <li>PYQs: Probability + Sorting</li>
 </ul>
 `
-};
-
-// ================== GENERATE WEEKS ==================
-const now = new Date();
-
-for (let i=1;i<=TOTAL_WEEKS;i++){
-
-  const week=document.createElement("div");
-
-  week.textContent=`W${i}`;
-  week.classList.add("week");
-
-  const end=new Date(
-    START_DATE.getTime()+i*7*24*60*60*1000
-  );
-
-  if(now>end){
-
-    week.classList.add("completed");
-
-    week.onclick=()=>{
-      modalContent.innerHTML=
-        completedWeeks[i]||
-        "<p>No data for this week.</p>";
-
-      backdrop.classList.remove("hidden");
-      modal.classList.remove("hidden");
-
-      requestAnimationFrame(()=>{
-        backdrop.classList.add("active");
-        modal.classList.add("active");
-      });
     };
 
-  }else{
-    week.classList.add("locked");
-  }
+    // ================== GENERATE WEEKS ==================
+    const now = new Date();
 
-  weeksGrid.appendChild(week);
-}
+    for (let i = 1; i <= TOTAL_WEEKS; i++) {
 
-// ================== STREAK ==================
-(function(){
+        const week = document.createElement("div");
 
-const logs = loadLogs();
+        week.textContent = `W${i}`;
+        week.classList.add("week");
 
-const dates = Object.keys(logs)
-.filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
-.sort((a,b) => new Date(a) - new Date(b));
+        const end = new Date(
+            START_DATE.getTime() + i * 7 * 24 * 60 * 60 * 1000
+        );
 
-let current = 0;
-let best = 0;
-let running = 0;
+        if (now > end) {
 
-for(let i=0;i<dates.length;i++){
+            week.classList.add("completed");
 
-  if(i===0){
-    running = 1;
-  }
-  else{
+            week.onclick = () => {
+                modalContent.innerHTML =
+                    completedWeeks[i] ||
+                    "<p>No data for this week.</p>";
 
-    const prev = new Date(dates[i-1]);
-    const curr = new Date(dates[i]);
+                backdrop.classList.remove("hidden");
+                modal.classList.remove("hidden");
 
-    const diff =
-      (curr - prev)/(1000*60*60*24);
+                requestAnimationFrame(() => {
+                    backdrop.classList.add("active");
+                    modal.classList.add("active");
+                });
+            };
 
-    if(diff === 1){
-      running++;
-    }else{
-      running = 1;
+        } else {
+            week.classList.add("locked");
+        }
+
+        weeksGrid.appendChild(week);
     }
-  }
 
-  best = Math.max(best, running);
-}
+    // ================== STREAK ==================
+    (function () {
 
-current = running;
+        const logs = loadLogs();
 
-document.getElementById("currentStreak").textContent = current;
-document.getElementById("bestStreak").textContent = best;
+        const dates = Object.keys(logs)
+            .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
+            .sort((a, b) => new Date(a) - new Date(b));
 
-document.getElementById("streakFill").style.width =
-`${Math.min(current,30)/30*100}%`;
+        let current = 0;
+        let best = 0;
+        let running = 0;
 
-})();
+        for (let i = 0; i < dates.length; i++) {
+
+            if (i === 0) {
+                running = 1;
+            }
+            else {
+
+                const prev = new Date(dates[i - 1]);
+                const curr = new Date(dates[i]);
+
+                const diff =
+                    (curr - prev) / (1000 * 60 * 60 * 24);
+
+                if (diff === 1) {
+                    running++;
+                } else {
+                    running = 1;
+                }
+            }
+
+            best = Math.max(best, running);
+        }
+
+        current = running;
+
+        document.getElementById("currentStreak").textContent = current;
+        document.getElementById("bestStreak").textContent = best;
+
+        document.getElementById("streakFill").style.width =
+            `${Math.min(current, 30) / 30 * 100}%`;
+
+    })();
 
 
-// ================== TIMER ==================
-let latestTimeString="";
+    // ================== TIMER ==================
+    let latestTimeString = "";
 
-setInterval(()=>{
+    setInterval(() => {
 
-const diff=targetDate-Date.now();
+        const diff = targetDate - Date.now();
 
-if(diff<=0){
+        if (diff <= 0) {
 
-latestTimeString="00:00:00";
-return;
+            latestTimeString = "00:00:00";
+            return;
 
-}
+        }
 
-const hours=Math.floor(diff/(1000*60*60));
-const minutes=Math.floor((diff/(1000*60))%60);
-const seconds=Math.floor((diff/1000)%60);
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
 
-latestTimeString=
-`${hours.toString().padStart(2,"0")}:`+
-`${minutes.toString().padStart(2,"0")}:`+
-`${seconds.toString().padStart(2,"0")}`;
+        latestTimeString =
+            `${hours.toString().padStart(2, "0")}:` +
+            `${minutes.toString().padStart(2, "0")}:` +
+            `${seconds.toString().padStart(2, "0")}`;
 
-},1000);
+    }, 1000);
 
-// ================== LIVE TIMER ==================
-let gateTimerInterval=null;
+    // ================== LIVE TIMER ==================
+    let gateTimerInterval = null;
 
-function startGateTimerLive(){
+    function startGateTimerLive() {
 
-const box=document.getElementById("gateTimerBox");
+        const box = document.getElementById("gateTimerBox");
 
-if(!box) return;
+        if (!box) return;
 
-gateTimerInterval=setInterval(()=>{
-box.textContent=latestTimeString;
-},1000);
+        gateTimerInterval = setInterval(() => {
+            box.textContent = latestTimeString;
+        }, 1000);
 
-}
+    }
 
-function stopGateTimerLive(){
+    function stopGateTimerLive() {
 
-if(gateTimerInterval){
+        if (gateTimerInterval) {
 
-clearInterval(gateTimerInterval);
-gateTimerInterval=null;
+            clearInterval(gateTimerInterval);
+            gateTimerInterval = null;
 
-}
+        }
 
-}
+    }
 
-// ================== ANALYTICS BUTTON ==================
-if (openAnalyticsBtn) {
+    // ================== ANALYTICS BUTTON ==================
+    if (openAnalyticsBtn) {
 
-openAnalyticsBtn.addEventListener("click", () => {
+        openAnalyticsBtn.addEventListener("click", () => {
 
-modalContent.innerHTML = `
+            modalContent.innerHTML = `
 <h3>Performance vs Emotional State</h3>
 
 <label>Start Date</label>
@@ -536,155 +534,152 @@ Apply Range
 <canvas id="analyticsChart"></canvas>
 `;
 
-backdrop.classList.remove("hidden");
-modal.classList.remove("hidden");
+            backdrop.classList.remove("hidden");
+            modal.classList.remove("hidden");
 
-requestAnimationFrame(() => {
-backdrop.classList.add("active");
-modal.classList.add("active");
-});
+            requestAnimationFrame(() => {
+                backdrop.classList.add("active");
+                modal.classList.add("active");
+            });
 
-renderAnalyticsChart();
-document.getElementById("applyAnalyticsRange").onclick = () => {
-renderAnalyticsChart();
-};
+            renderAnalyticsChart();
+            document.getElementById("applyAnalyticsRange").onclick = () => {
+                renderAnalyticsChart();
+            };
 
-function setRange(days) {
+            function setRange(days) {
 
-const end = new Date();
-const start = new Date();
+                const end = new Date();
+                const start = new Date();
 
-start.setDate(end.getDate() - days);
+                start.setDate(end.getDate() - days);
 
-document.getElementById("analyticsStart").value =
-start.toISOString().split("T")[0];
+                document.getElementById("analyticsStart").value =
+                    start.toISOString().split("T")[0];
 
-document.getElementById("analyticsEnd").value =
-end.toISOString().split("T")[0];
+                document.getElementById("analyticsEnd").value =
+                    end.toISOString().split("T")[0];
 
-renderAnalyticsChart();
+                renderAnalyticsChart();
 
-}
+            }
 
-document.getElementById("range7").onclick = () => setRange(7);
+            document.getElementById("range7").onclick = () => setRange(7);
 
-document.getElementById("range30").onclick = () => setRange(30);
+            document.getElementById("range30").onclick = () => setRange(30);
 
-document.getElementById("range90").onclick = () => setRange(90);
+            document.getElementById("range90").onclick = () => setRange(90);
 
-document.getElementById("rangeAll").onclick = () => {
+            document.getElementById("rangeAll").onclick = () => {
 
-document.getElementById("analyticsStart").value = "";
-document.getElementById("analyticsEnd").value = "";
+                document.getElementById("analyticsStart").value = "";
+                document.getElementById("analyticsEnd").value = "";
 
-renderAnalyticsChart();
+                renderAnalyticsChart();
 
-};
+            };
 
-});
+        });
 
-}
+    }
 
 
-// ================== ANALYTICS CHART ==================
-function renderAnalyticsChart() {
+    // ================== ANALYTICS CHART ==================
+    function renderAnalyticsChart() {
 
-const ctx = document.getElementById("analyticsChart");
+        const ctx = document.getElementById("analyticsChart");
 
-const logs = loadLogs();
+        const logs = loadLogs();
 
-const start = document.getElementById("analyticsStart")?.value;
-const end = document.getElementById("analyticsEnd")?.value;
+        const start = document.getElementById("analyticsStart")?.value;
+        const end = document.getElementById("analyticsEnd")?.value;
 
-let dates = Object.keys(logs)
-.filter(d =>
-  logs[d].performance !== undefined &&
-  logs[d].timestamp !== undefined
-)
-.sort((a,b) => new Date(a) - new Date(b));
+        let dates = Object.keys(logs)
+            .filter(d => logs[d].performance !== undefined)
+            .sort((a, b) => new Date(a) - new Date(b));
 
-if (start)
-dates = dates.filter(d => d >= start);
+        if (start)
+            dates = dates.filter(d => d >= start);
 
-if (end)
-dates = dates.filter(d => d <= end);
+        if (end)
+            dates = dates.filter(d => d <= end);
 
-const academic = [];
-const emotional = [];
+        const academic = [];
+        const emotional = [];
 
-dates.forEach(date => {
+        dates.forEach(date => {
 
-const log = logs[date];
+            const log = logs[date];
 
-if (log.performance !== undefined && log.rating !== undefined) {
+            if (log.performance !== undefined && log.rating !== undefined) {
 
-academic.push(log.performance);
-emotional.push(log.rating);
+                academic.push(log.performance);
+                emotional.push(log.rating);
 
-}
+            }
 
-});
+        });
 
-new Chart(ctx, {
+        new Chart(ctx, {
 
-type: "line",
+            type: "line",
 
-data: {
+            data: {
 
-labels: dates,
+                labels: dates,
 
-datasets: [
+                datasets: [
 
-{
-label: "Academic Output",
-data: academic,
-borderColor: "#22c55e",
-backgroundColor: "transparent",
-tension: 0.35
-},
+                    {
+                        label: "Academic Output",
+                        data: academic,
+                        borderColor: "#22c55e",
+                        backgroundColor: "transparent",
+                        tension: 0.35
+                    },
 
-{
-label: "Mental State",
-data: emotional,
-borderColor: "#ef4444",
-backgroundColor: "transparent",
-tension: 0.35
-}
+                    {
+                        label: "Mental State",
+                        data: emotional,
+                        borderColor: "#ef4444",
+                        backgroundColor: "transparent",
+                        tension: 0.35
+                    }
 
-]
+                ]
 
-},
+            },
 
-options: {
+            options: {
 
-responsive: true,
+                responsive: true,
 
-plugins: {
-legend: {
-labels: {
-color: "#e5e7eb"
-}
-}
-},
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "#e5e7eb"
+                        }
+                    }
+                },
 
-scales: {
+                scales: {
 
-x: {
-ticks: { color: "#94a3b8" }
-},
+                    x: {
+                        ticks: { color: "#94a3b8" }
+                    },
 
-y: {
-min: 0,
-max: 10,
-ticks: { color: "#94a3b8" }
-}
+                    y: {
+                        min: 0,
+                        max: 10,
+                        ticks: { color: "#94a3b8" }
+                    }
 
-}
+                }
 
-}
+            }
 
-});
+        });
 
-}
+    }
 
 });
