@@ -366,6 +366,16 @@ document.addEventListener("DOMContentLoaded", function () {
 <li>DBMS: Normalization (1NF - 3NF)</li>
 <li>PYQs: Probability + Sorting</li>
 </ul>
+`,
+
+        6: `
+<strong>Week 6 (Mar 8 – Mar 14)</strong>
+<ul class="week-list">
+<li>Maths: Random variables, Distributions</li>
+<li>DSA: MergeSort, Quicksort</li>
+<li>DBMS: Indexing</li>
+<li>PYQs: Probability + D&C</li>
+</ul>
 `
     };
 
@@ -373,7 +383,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const now = new Date();
 
     for (let i = 1; i <= TOTAL_WEEKS; i++) {
-
         const week = document.createElement("div");
 
         week.textContent = `W${i}`;
