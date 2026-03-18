@@ -585,6 +585,8 @@ Apply Range
 
 
     // ================== ANALYTICS CHART ==================
+    let analyticsChartInstance = null;
+
     function renderAnalyticsChart() {
 
         const ctx = document.getElementById("analyticsChart");
@@ -620,7 +622,13 @@ Apply Range
 
         });
 
-        new Chart(ctx, {
+        // Destroy existing chart before creating a new one
+        if (analyticsChartInstance) {
+            analyticsChartInstance.destroy();
+            analyticsChartInstance = null;
+        }
+
+        analyticsChartInstance = new Chart(ctx, {
 
             type: "line",
 
