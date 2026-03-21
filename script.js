@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     // ================== CONFIG ==================
     const START_DATE = new Date("2026-02-01T00:00:00");
     const TOTAL_WEEKS = 52;
@@ -22,15 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let activeWeek = null;
 
 
-    // ================== DAILY LOG STORAGE ==================
-    function loadLogs() {
-        const logs = localStorage.getItem("dailyLogs");
-        return logs ? JSON.parse(logs) : {};
-    }
-
-    function saveLogs(logs) {
-        localStorage.setItem("dailyLogs", JSON.stringify(logs));
-    }
+    // ================== DAILY LOG STORAGE (FIRESTORE-BACKED) ==================
+    // db.loadLogs() and db.saveLogs() are provided by db.js (Firestore + localStorage cache)
+    const dailyLogs = await db.loadLogs();
 
     function todayKey() {
         const now = new Date();
@@ -47,8 +41,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }-${String(d.getDate()).padStart(2, "0")
             }`;
     }
-
-    const dailyLogs = loadLogs();
 
 
     // ================== FALLBACK PROMPT ==================
@@ -67,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 timestamp: Date.now()
             };
 
-            saveLogs(dailyLogs);
+            await db.saveLogs(dailyLogs);
         }
     }
 
@@ -165,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 modal.classList.add("active");
             });
 
-            document.getElementById("saveLogBtn").onclick = () => {
+            document.getElementById("saveLogBtn").onclick = async () => {
 
                 const hours = Number(document.getElementById("logHours").value);
                 const tasks = document.getElementById("logTasks").value.trim();
@@ -211,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     timestamp: Date.now()
                 };
 
-                saveLogs(dailyLogs);
+                await db.saveLogs(dailyLogs);
                 closeModal();
 
             };
@@ -420,9 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ================== STREAK ==================
     (function () {
 
-        const logs = loadLogs();
-
-        const dates = Object.keys(logs)
+        const dates = Object.keys(dailyLogs)
             .filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d))
             .sort((a, b) => new Date(a) - new Date(b));
 
@@ -600,13 +590,11 @@ Apply Range
 
         const ctx = document.getElementById("analyticsChart");
 
-        const logs = loadLogs();
-
         const start = document.getElementById("analyticsStart")?.value;
         const end = document.getElementById("analyticsEnd")?.value;
 
-        let dates = Object.keys(logs)
-            .filter(d => logs[d].performance !== undefined)
+        let dates = Object.keys(dailyLogs)
+            .filter(d => dailyLogs[d].performance !== undefined)
             .sort((a, b) => new Date(a) - new Date(b));
 
         if (start)
@@ -620,7 +608,7 @@ Apply Range
 
         dates.forEach(date => {
 
-            const log = logs[date];
+            const log = dailyLogs[date];
 
             if (log.performance !== undefined && log.rating !== undefined) {
 
