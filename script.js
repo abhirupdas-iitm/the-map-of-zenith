@@ -369,6 +369,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 <li>PYQs: Probability + D&C</li>
 </ul>
 `
+
+        7: `
+<strong>Week 7 (Mar 15 – Mar 21)</strong>
+<ul class="week-list">
+<li>Algo: Recurrences, Master Theorem</li>
+<li>OS: Processes, Threads</li>
+<li>PYQs: OS Basics</li>
+</ul>
+`
     };
 
     // ================== GENERATE WEEKS ==================
