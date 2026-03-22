@@ -368,7 +368,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 <li>DBMS: Indexing</li>
 <li>PYQs: Probability + D&C</li>
 </ul>
-`
+`,
 
         7: `
 <strong>Week 7 (Mar 15 – Mar 21)</strong>
