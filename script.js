@@ -377,6 +377,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 <li>OS: Processes, Threads</li>
 <li>PYQs: OS Basics</li>
 </ul>
+`,
+
+        8: `
+<strong>Week 8 (Mar 22 – Mar 28)</strong>
+<ul class="week-list">
+<li>Algo: DP Intro (LCS, Knapsack)</li>
+<li>OS: CPU Scheduling</li>
+<li>PYQs: DP + OS</li>
+</ul>
 `
     };
 
