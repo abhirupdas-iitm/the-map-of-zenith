@@ -10,10 +10,13 @@
     <div id="authScreen" class="auth-screen">
       <div class="auth-box">
         <h2>Zenith Access</h2>
+        <input type="email" id="adminEmail" placeholder="Enter admin email">
         <input type="password" id="adminPassword" placeholder="Enter admin password">
         <button id="loginBtn" class="progress-btn">Login</button>
         <button id="guestBtn" class="progress-btn">View as Guest</button>
+        <a href="#" id="forgotPasswordLink" class="forgot-link">Forgot Password?</a>
         <p id="authError" class="error-text"></p>
+        <p id="authSuccess" class="success-text hidden"></p>
       </div>
     </div>
   <main class="container">
@@ -235,6 +238,7 @@ Execution, Analysis & Refinement<br>
   <!-- Firebase SDK (compat mode for simplicity) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
   <!-- App scripts (order matters: config → db → script → auth) -->
   <script src="config.js"></script>
