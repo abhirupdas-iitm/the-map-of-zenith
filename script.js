@@ -386,6 +386,42 @@ document.addEventListener("DOMContentLoaded", async function () {
 <li>OS: CPU Scheduling</li>
 <li>PYQs: DP + OS</li>
 </ul>
+`,
+
+        9: `
+<strong>Week 9 (Mar 29 – Apr 4)</strong>
+<ul class="week-list">
+<li>Algo: Graphs (BFS,DFS)</li>
+<li>OS: Memory Management</li>
+<li>PYQs: Graphs + Paging</li>
+</ul>
+`,
+
+        10: `
+<strong>Week 10 (Apr 5 – Apr 11)</strong>
+<ul class="week-list">
+<li>Algo: Shortest Paths, (MST)</li>
+<li>OS: Deadlocks</li>
+<li>PYQs: Graphs + Deadlocks</li>
+</ul>
+`,
+
+        11: `
+<strong>Week 11 (Apr 12 – Apr 18)</strong>
+<ul class="week-list">
+<li>TOC: Regular Languages, DFA/NFA</li>
+<li>ML: Linear Regression</li>
+<li>PYQs: TOC Basics</li>
+</ul>
+`,
+
+        12: `
+<strong>Week 12 (Apr 19 – Apr 25)</strong>
+<ul class="week-list">
+<li>TOC: CFGs, PDA</li>
+<li>ML: Logistic Regression, SVM</li>
+<li>PYQs: TOC + ML</li>
+</ul>
 `
     };
 
