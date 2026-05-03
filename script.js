@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             backdrop.classList.add("hidden");
             modal.classList.add("hidden");
             modal.classList.remove("analytics-modal"); // clean up widescreen class
+            document.body.style.overflow = "";          // restore page scroll
 
             modalContent.innerHTML = "";
 
@@ -567,6 +568,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             // Add widescreen class before rendering
             modal.classList.add("analytics-modal");
+            document.body.style.overflow = "hidden"; // lock page scroll
 
             modalContent.innerHTML = `
 <button id="analyticsClose" class="analytics-close-btn" title="Back to Home">✕</button>
