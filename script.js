@@ -424,6 +424,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 <li>ML: Logistic Regression, SVM</li>
 <li>PYQs: TOC + ML</li>
 </ul>
+`,
+
+        13: `
+<strong>Week 13 (Apr 26 – May 2)</strong>
+<ul class="week-list">
+<li>TOC: Turing Machines</li>
+<li>CN: OSI, TCP/IP</li>
+<li>PYQs: TOC</li>
+</ul>
 `
     };
 
@@ -619,7 +628,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 renderAnalyticsChart();
             }
 
-            document.getElementById("range7").onclick  = () => setRange(7);
+            document.getElementById("range7").onclick = () => setRange(7);
             document.getElementById("range30").onclick = () => setRange(30);
             document.getElementById("range90").onclick = () => setRange(90);
             document.getElementById("rangeAll").onclick = () => {
@@ -670,16 +679,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         const ctx = document.getElementById("analyticsChart");
 
         const start = document.getElementById("analyticsStart")?.value;
-        const end   = document.getElementById("analyticsEnd")?.value;
+        const end = document.getElementById("analyticsEnd")?.value;
 
         let dates = Object.keys(dailyLogs)
             .filter(d => dailyLogs[d].performance !== undefined)
             .sort((a, b) => new Date(a) - new Date(b));
 
         if (start) dates = dates.filter(d => d >= start);
-        if (end)   dates = dates.filter(d => d <= end);
+        if (end) dates = dates.filter(d => d <= end);
 
-        const academic  = [];
+        const academic = [];
         const emotional = [];
 
         dates.forEach(date => {
@@ -691,8 +700,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         // Build display labels: show month name only on first occurrence
-        const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun",
-                             "Jul","Aug","Sep","Oct","Nov","Dec"];
+        const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         let seenMonths = new Set();
         const displayLabels = dates.map(d => {
             const monthKey = d.slice(0, 7);
