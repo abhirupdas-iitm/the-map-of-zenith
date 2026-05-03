@@ -596,7 +596,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 modal.classList.add("active");
             });
 
-            renderAnalyticsChart();
+            // Delay render so the modal is fully painted before Chart.js reads canvas size
+            setTimeout(() => renderAnalyticsChart(), 200);
             document.getElementById("applyAnalyticsRange").onclick = () => {
                 renderAnalyticsChart();
             };
