@@ -569,6 +569,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             modal.classList.add("analytics-modal");
 
             modalContent.innerHTML = `
+<button id="analyticsClose" class="analytics-close-btn" title="Back to Home">✕</button>
 <h3 style="margin-bottom:0.75rem;">Performance vs Emotional State</h3>
 
 <div class="analytics-controls">
@@ -595,6 +596,9 @@ document.addEventListener("DOMContentLoaded", async function () {
                 backdrop.classList.add("active");
                 modal.classList.add("active");
             });
+
+            // Wire close button
+            document.getElementById("analyticsClose").onclick = () => closeModal();
 
             // Delay render so the modal is fully painted before Chart.js reads canvas size
             setTimeout(() => renderAnalyticsChart(), 200);
