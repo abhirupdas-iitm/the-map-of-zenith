@@ -75,6 +75,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             backdrop.classList.add("hidden");
             modal.classList.add("hidden");
+            modal.classList.remove("analytics-modal"); // clean up widescreen class
 
             modalContent.innerHTML = "";
 
@@ -564,27 +565,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         openAnalyticsBtn.addEventListener("click", () => {
 
+            // Add widescreen class before rendering
+            modal.classList.add("analytics-modal");
+
             modalContent.innerHTML = `
-<h3>Performance vs Emotional State</h3>
+<h3 style="margin-bottom:0.75rem;">Performance vs Emotional State</h3>
 
-<label>Start Date</label>
-<input type="date" id="analyticsStart">
-
-<label>End Date</label>
-<input type="date" id="analyticsEnd">
-
-<div style="margin-top:10px;margin-bottom:10px;">
-<button id="range7" class="progress-btn">Last 7 Days</button>
-<button id="range30" class="progress-btn">Last 30 Days</button>
-<button id="range90" class="progress-btn">Last 90 Days</button>
-<button id="rangeAll" class="progress-btn">All Time</button>
+<div class="analytics-controls">
+  <label>From</label>
+  <input type="date" id="analyticsStart">
+  <label>To</label>
+  <input type="date" id="analyticsEnd">
+  <button id="range7" class="progress-btn" style="margin:0;">Last 7 Days</button>
+  <button id="range30" class="progress-btn" style="margin:0;">Last 30 Days</button>
+  <button id="range90" class="progress-btn" style="margin:0;">Last 90 Days</button>
+  <button id="rangeAll" class="progress-btn" style="margin:0;">All Time</button>
+  <button id="applyAnalyticsRange" class="progress-btn" style="margin:0;">Apply Range</button>
 </div>
 
-<button id="applyAnalyticsRange" class="progress-btn">
-Apply Range
-</button>
-
-<canvas id="analyticsChart"></canvas>
+<div class="analytics-chart-wrap">
+  <canvas id="analyticsChart"></canvas>
+</div>
 `;
 
             backdrop.classList.remove("hidden");
@@ -601,35 +602,23 @@ Apply Range
             };
 
             function setRange(days) {
-
                 const end = new Date();
                 const start = new Date();
-
                 start.setDate(end.getDate() - days);
-
                 document.getElementById("analyticsStart").value =
                     start.toISOString().split("T")[0];
-
                 document.getElementById("analyticsEnd").value =
                     end.toISOString().split("T")[0];
-
                 renderAnalyticsChart();
-
             }
 
-            document.getElementById("range7").onclick = () => setRange(7);
-
+            document.getElementById("range7").onclick  = () => setRange(7);
             document.getElementById("range30").onclick = () => setRange(30);
-
             document.getElementById("range90").onclick = () => setRange(90);
-
             document.getElementById("rangeAll").onclick = () => {
-
                 document.getElementById("analyticsStart").value = "";
                 document.getElementById("analyticsEnd").value = "";
-
                 renderAnalyticsChart();
-
             };
 
         });
@@ -640,40 +629,75 @@ Apply Range
     // ================== ANALYTICS CHART ==================
     let analyticsChartInstance = null;
 
+    // Month-boundary vertical-line plugin for Chart.js
+    const monthDividerPlugin = {
+        id: "monthDividers",
+        afterDraw(chart) {
+            const { ctx, chartArea: { top, bottom }, scales: { x } } = chart;
+            const labels = chart.data.labels;
+            if (!labels || labels.length === 0) return;
+
+            ctx.save();
+            ctx.setLineDash([4, 5]);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(148,163,184,0.18)"; // subtle slate
+
+            let prevMonth = null;
+            labels.forEach((label, i) => {
+                const month = label.slice(0, 7); // "YYYY-MM"
+                if (prevMonth && month !== prevMonth) {
+                    const xPos = x.getPixelForValue(i - 0.5);
+                    ctx.beginPath();
+                    ctx.moveTo(xPos, top);
+                    ctx.lineTo(xPos, bottom);
+                    ctx.stroke();
+                }
+                prevMonth = month;
+            });
+            ctx.restore();
+        }
+    };
+
     function renderAnalyticsChart() {
 
         const ctx = document.getElementById("analyticsChart");
 
         const start = document.getElementById("analyticsStart")?.value;
-        const end = document.getElementById("analyticsEnd")?.value;
+        const end   = document.getElementById("analyticsEnd")?.value;
 
         let dates = Object.keys(dailyLogs)
             .filter(d => dailyLogs[d].performance !== undefined)
             .sort((a, b) => new Date(a) - new Date(b));
 
-        if (start)
-            dates = dates.filter(d => d >= start);
+        if (start) dates = dates.filter(d => d >= start);
+        if (end)   dates = dates.filter(d => d <= end);
 
-        if (end)
-            dates = dates.filter(d => d <= end);
-
-        const academic = [];
+        const academic  = [];
         const emotional = [];
 
         dates.forEach(date => {
-
             const log = dailyLogs[date];
-
             if (log.performance !== undefined && log.rating !== undefined) {
-
                 academic.push(log.performance);
                 emotional.push(log.rating);
-
             }
-
         });
 
-        // Destroy existing chart before creating a new one
+        // Build display labels: show month name only on first occurrence
+        const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun",
+                             "Jul","Aug","Sep","Oct","Nov","Dec"];
+        let seenMonths = new Set();
+        const displayLabels = dates.map(d => {
+            const monthKey = d.slice(0, 7);
+            if (!seenMonths.has(monthKey)) {
+                seenMonths.add(monthKey);
+                const mIdx = parseInt(d.slice(5, 7), 10) - 1;
+                return MONTH_NAMES[mIdx];
+            }
+            return "";
+        });
+
+        // Destroy existing chart
         if (analyticsChartInstance) {
             analyticsChartInstance.destroy();
             analyticsChartInstance = null;
@@ -682,59 +706,79 @@ Apply Range
         analyticsChartInstance = new Chart(ctx, {
 
             type: "line",
+            plugins: [monthDividerPlugin],
 
             data: {
-
-                labels: dates,
-
+                labels: dates,          // raw dates drive the divider plugin
                 datasets: [
-
                     {
                         label: "Academic Output",
                         data: academic,
                         borderColor: "#22c55e",
                         backgroundColor: "transparent",
+                        borderWidth: 2,
+                        pointRadius: 0,
                         tension: 0.35
                     },
-
                     {
                         label: "Mental State",
                         data: emotional,
                         borderColor: "#ef4444",
                         backgroundColor: "transparent",
+                        borderWidth: 2,
+                        pointRadius: 0,
                         tension: 0.35
                     }
-
                 ]
-
             },
 
             options: {
-
                 responsive: true,
+                maintainAspectRatio: false,
 
                 plugins: {
                     legend: {
-                        labels: {
-                            color: "#e5e7eb"
-                        }
-                    }
+                        labels: { color: "#e5e7eb", boxWidth: 14, padding: 18 }
+                    },
+                    tooltip: { mode: "index", intersect: false }
                 },
 
                 scales: {
-
                     x: {
-                        ticks: { color: "#94a3b8" }
+                        ticks: {
+                            color: "#00e5ff",          // Cyan month labels
+                            font: { size: 12, weight: "600" },
+                            maxRotation: 0,
+                            autoSkip: false,
+                            callback(val, idx) {
+                                return displayLabels[idx];
+                            }
+                        },
+                        grid: {
+                            color: "rgba(148,163,184,0.08)",
+                            drawTicks: false
+                        },
+                        border: { color: "rgba(148,163,184,0.2)" }
                     },
 
                     y: {
                         min: 0,
                         max: 10,
-                        ticks: { color: "#94a3b8" }
+                        ticks: {
+                            color: "#94a3b8",
+                            stepSize: 1,
+                            font: { size: 11 }
+                        },
+                        grid: { color: "rgba(148,163,184,0.08)" },
+                        border: { color: "rgba(148,163,184,0.2)" },
+                        title: {
+                            display: true,
+                            text: "Mental State  /  Academic Output  (0–10)",
+                            color: "#64748b",
+                            font: { size: 11 }
+                        }
                     }
-
                 }
-
             }
 
         });

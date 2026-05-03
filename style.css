@@ -168,8 +168,8 @@ footer {
   max-width: 480px;
   width: 92%;
 
-  max-height: 80vh;              /* ✅ LIMIT HEIGHT */
-  overflow-y: auto;              /* ✅ ENABLE SCROLL */
+  max-height: 80vh;
+  overflow-y: auto;
 
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   opacity: 0;
@@ -180,6 +180,53 @@ footer {
 .modal.active {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
+}
+
+/* ===== ANALYTICS MODAL — 16:9 widescreen ===== */
+.modal.analytics-modal {
+  width: 90vw;
+  max-width: 1100px;
+  /* height = 9/16 of width, capped to viewport */
+  max-height: 90vh;
+  padding: 1.5rem 1.75rem;
+  overflow-y: auto;
+}
+
+/* Controls row (buttons + date pickers) */
+.analytics-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.analytics-controls label {
+  margin-bottom: 0;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.analytics-controls input[type="date"] {
+  width: auto;
+  margin-bottom: 0;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+/* Chart wrapper maintains 16:9 */
+.analytics-chart-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.analytics-chart-wrap canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 /* Week heading */
 h3 {
